@@ -1,0 +1,18 @@
+// Code Practice: Making a Scene
+// Name: Nicolas Vaillancourt
+// Date: 1/13/25
+
+"use strict"
+
+let config = {
+    type: Phaser.AUTO,
+    scale: {
+        mode: Phaser.Scale.RESIZE, // Fit the game to the screen
+        autoCenter: Phaser.Scale.CENTER_BOTH // Center the game canvas
+    },
+    // width: 1280,
+    // height: 960,
+    scene: [MainMenu, Play]
+}
+
+let game = new Phaser.Game(config)
