@@ -8,6 +8,7 @@ class Enemy extends Entity {
         this.tileSize = 64  // in pixels
         this.maxAcc *= 1 + this.frictionAlpha / (this.frictionAlpha + this.maxSpeed)    // fix acceleration due to friction alpha
 
+        super.enablePhysics('circle', 1.5)
     }
 
 

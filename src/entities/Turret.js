@@ -1,4 +1,4 @@
-class Turret extends Entity {
+class Turret extends Building {
     static target_types = ["enemy"]
 
     constructor(scene, x, y, targetRadius) {
@@ -10,7 +10,7 @@ class Turret extends Entity {
         this.target = null                  // entity aiming for
         this.fireRate = 1                   // shots per second
         this.timeTillShoot = 1              // setup time before shooting and time between shots
-        this.muzzleVel = 4                 // speed of the bullet in tiles / second when initially shot
+        this.muzzleVel = 8                 // speed of the bullet in tiles / second when initially shot
         this.aliveBullets = []              // array of bullets currently shot
         this.shootOffset = new Phaser.Math.Vector2(0, -0.4)
         this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel

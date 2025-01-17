@@ -7,9 +7,11 @@ class Bullet extends Entity {
         this.maxSpeed = 40
         this.maxAcc = 10
         this.frictionAlpha = 0
-        this.lifetime = lifetime ?? 5
+        this.lifetime = lifetime ?? 3
         this.vel.x = muzzleSpeed
         this.vel.rotate(angle)
+
+        this.displaysHealth = true
     }
 
 

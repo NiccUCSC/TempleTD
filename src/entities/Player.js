@@ -10,7 +10,7 @@ class Player extends Entity {
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
 
-        super.enablePhysics('circle', 0.5)
+        super.enablePhysics('circle', 1.5)
     }
 
     update(time, dt) {

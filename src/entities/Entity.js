@@ -31,6 +31,15 @@ class Entity extends Phaser.GameObjects.Sprite {
 
         this.update_sprite()
 
+        // Health and stats
+        this.displaysHealth = true
+        this.maxHealth = 10
+        this.health = this.maxHealth * 0.8
+        this.healthRegenRate = 0.01         // 1% per second
+        this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
+        this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
+        this.healthBar = this.scene.add.graphics().setDepth(zdepth);
+
         // events
         this.on('pointerover', this.pointerover, this);
         this.on('pointerout', this.pointerout, this);
@@ -41,16 +50,24 @@ class Entity extends Phaser.GameObjects.Sprite {
     }
 
     enablePhysics(shape, size) {
-        // this.scene.physics.world.enable(this);
+        // this.collider = this.scene.matter.world.add(this)
+
+
 
         // switch (shape) {
         // case 'rect':
         //     this.body.setSize(size.x * Entity.tileSize, size.y * Entity.tileSize)
         //     break
         // case 'circ':
-        //     this.body.setCircle(size * Entity.tileSize)
+        //     this.collider.setBody({
+        //         type: 'circle',
+        //         radius: size * Entity.tileSize
+        //     });            
         //     break
         // }
+
+        // console.log(`Collider = ${this.collider}`)
+        // console.log(this.collider)
     }
 
     // event functions
@@ -72,6 +89,18 @@ class Entity extends Phaser.GameObjects.Sprite {
         this.pos.add(this.vel.clone().scale(dt))
     }
 
+    show_healthbar() {
+        this.healthBar.clear();
+
+        // if (self.health == self.maxHealth) return
+
+        let screenPos = this.pos.clone().add(this.healthbarOffset).scale(Entity.tileSize)
+        this.healthBar.fillStyle(0x555555, this.zdepth); // Gray background color
+        this.healthBar.fillRect(screenPos.x, screenPos.y, this.healthbarSize.x * Entity.tileSize, this.healthbarSize.y * Entity.tileSize);
+
+        this.healthBar.fillStyle(0x00FF00, this.zdepth); // Green health
+        this.healthBar.fillRect(screenPos.x, screenPos.y, this.healthbarSize.x * (this.health / this.maxHealth) * Entity.tileSize, this.healthbarSize.y * Entity.tileSize);
+    }
 
     update_sprite(min_vel) {
         this.x = this.pos.x * Entity.tileSize
@@ -84,7 +113,10 @@ class Entity extends Phaser.GameObjects.Sprite {
     }
 
     static update_all(time, dt) {
-        for (const entity of Entity.entities) entity.update(time, dt)
+        for (const entity of Entity.entities) {
+            entity.update(time, dt)
+            if (entity.displaysHealth) entity.show_healthbar()
+        }
     }
 
     static is_alive(entity) {
@@ -92,10 +124,18 @@ class Entity extends Phaser.GameObjects.Sprite {
     }
 
     static kill(entity) {
-        console.log(`Killing ${entity.name} at (${entity.pos.x}, ${entity.pos.y})`)
+        // console.log(`Killing ${entity.name} at (${entity.pos.x}, ${entity.pos.y})`)
+
+        Entity.entities = Entity.entities.filter(item => item !== entity);
 
         entity.destroy()
-        const index = Entity.entities.indexOf(entity);
-        if (index != -1) Entity.entities.splice(index, 1);
+        entity = null
+
+        // console.log(Entity.entities.includes(entity))
+    }
+
+    destroy() {
+        super.destroy()
+        
     }
 }
