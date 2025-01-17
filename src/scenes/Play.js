@@ -25,11 +25,11 @@ class Play extends Phaser.Scene {
         this.load.image("ground", "towerDefense_tile236.png")
         this.load.image("enemy", "towerDefense_tile134.png")
         this.load.image("player", "towerDefense_tile245.png")
+        this.load.image("turret", "towerDefense_tile249.png")
+        this.load.image("bullet", "towerDefense_tile251.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")
-
-
     }
 
     create() {
@@ -56,19 +56,19 @@ class Play extends Phaser.Scene {
         this.map.fill(236, 0, 0, this.map.width, this.map.height);  // Fill the entire map with tile index 0
 
 
-
-
         this.player = new Player(this, 0, 0);  // Position at (100, 100)
         this.hub = new Building(this, 0, 0, "hub", 3, 5)
-
         this.enemy = new Enemy(this, 2, 3)
+        this.turret = new Turret(this, 5, -3)
+
+        console.log(this.player)
     }
 
     update(time, dt) {
-        Entity.update_all(time, dt)
+        Entity.update_all(time / 1000, dt / 1000)
 
         this.cam.setZoom(this.zoom(this.vertTiles))
-        this.cam.startFollow(this.player.sprite)
+        this.cam.startFollow(this.player)
         // Called every frame
 
     }

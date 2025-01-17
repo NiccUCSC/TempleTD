@@ -1,4 +1,4 @@
-class Entity {
+class Entity extends Phaser.GameObjects.Sprite {
     
     static tileSize = 64
 
@@ -7,15 +7,16 @@ class Entity {
     static debugMode = false
 
     constructor(scene, x, y, name, scale, zdepth) {
-        Entity.entities.push(this)
+        super(scene, x, y, name);
 
         console.log(`Creating ${name} at (${x}, ${y})`)
+        Entity.entities.push(this)
+        scene.add.existing(this);
 
         this.scene = scene;
-        this.sprite = this.scene.add.sprite(0, 0, name);
-        this.sprite.setOrigin(0.5, 0.5)
-        this.sprite.setDepth(zdepth)
-        this.sprite.setScale(scale)
+        this.setOrigin(0.5, 0.5)
+        this.setDepth(zdepth)
+        this.setScale(scale)
         this.name = name
         this.scale = scale
         this.zdepth = zdepth
@@ -31,9 +32,7 @@ class Entity {
         this.update_sprite()
     }
 
-    move_with_force(force, dt) {
-        dt /= 1000
-        
+    move_with_force(force, dt) {        
         let speed = this.vel.length()
         let frictionMag = this.maxAcc * (speed + this.frictionAlpha) / (this.maxSpeed + this.frictionAlpha)
         let friction = this.vel.clone().setLength(frictionMag).scale(-1)
@@ -46,9 +45,9 @@ class Entity {
 
 
     update_sprite(min_vel) {
-        this.sprite.x = this.pos.x * Entity.tileSize
-        this.sprite.y = this.pos.y * Entity.tileSize
-        if (this.vel.length() > (min_vel ?? 0)) this.sprite.rotation = this.vel.angle()
+        this.x = this.pos.x * Entity.tileSize
+        this.y = this.pos.y * Entity.tileSize
+        if (this.vel.length() > (min_vel ?? 0)) this.rotation = this.vel.angle()
     }
 
     update(time, dt) {

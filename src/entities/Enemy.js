@@ -6,6 +6,7 @@ class Enemy extends Entity {
         this.maxAcc = 8        // in tiles / second ^ 2
         this.frictionAlpha = 2  // friction force minimum
         this.tileSize = 64  // in pixels
+        this.maxAcc *= 1 + this.frictionAlpha / (this.frictionAlpha + this.maxSpeed)    // fix acceleration due to friction alpha
 
     }
 
@@ -13,9 +14,9 @@ class Enemy extends Entity {
     update(time, dt) {
         // Handle movement input from keyboard (Arrow keys or WASD)
 
-        let targets = Entity.entities.filter(entity => entity.name == 'player' || entity.name == 'base')
+        let targets = Entity.entities.filter(entity => entity.name == 'player' || entity.name == 'hub')
 
-        let targetPos = (targets.length) ? targets[0].pos.clone() : new Phaser.Math.Vector2(0, 0)
+        let targetPos = (targets.length) ? targets[1].pos.clone() : new Phaser.Math.Vector2(0, 0)
 
         let force = targetPos.subtract(this.pos).setLength(this.maxAcc)
 

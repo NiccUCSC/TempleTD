@@ -12,8 +12,6 @@ class Player extends Entity {
     }
 
     update(time, dt) {
-        // Handle movement input from keyboard (Arrow keys or WASD)
-        time /= 1000
 
         let force = new Phaser.Math.Vector2(0, 0)
         force.x = this.cursors.right.isDown - this.cursors.left.isDown
