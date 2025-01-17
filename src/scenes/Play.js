@@ -23,10 +23,12 @@ class Play extends Phaser.Scene {
         this.load.path = "./assets/kenny/PNG/Default size/"
         this.load.image("hub", "towerDefense_tile180.png")
         this.load.image("ground", "towerDefense_tile236.png")
+        this.load.image("sand", "towerDefense_tile98.png")
         this.load.image("enemy", "towerDefense_tile134.png")
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turret", "towerDefense_tile249.png")
-        this.load.image("bullet", "towerDefense_tile251.png")
+        this.load.image("rocket", "towerDefense_tile251.png")
+        this.load.image("bullet", "towerDefense_tile272.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")
@@ -60,8 +62,6 @@ class Play extends Phaser.Scene {
         this.hub = new Building(this, 0, 0, "hub", 3, 5)
         this.enemy = new Enemy(this, 2, 3)
         this.turret = new Turret(this, 5, -3)
-
-        console.log(this.player)
     }
 
     update(time, dt) {
@@ -69,7 +69,5 @@ class Play extends Phaser.Scene {
 
         this.cam.setZoom(this.zoom(this.vertTiles))
         this.cam.startFollow(this.player)
-        // Called every frame
-
     }
 }

@@ -9,6 +9,8 @@ class Player extends Entity {
         this.maxAcc *= 1 + this.frictionAlpha / (this.frictionAlpha + this.maxSpeed)    // fix acceleration due to friction alpha
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
+
+        super.enablePhysics('circle', 0.5)
     }
 
     update(time, dt) {

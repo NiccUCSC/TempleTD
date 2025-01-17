@@ -16,7 +16,7 @@ class Enemy extends Entity {
 
         let targets = Entity.entities.filter(entity => entity.name == 'player' || entity.name == 'hub')
 
-        let targetPos = (targets.length) ? targets[1].pos.clone() : new Phaser.Math.Vector2(0, 0)
+        let targetPos = targets.length ? targets[1].pos.clone() : new Phaser.Math.Vector2(0, 0)
 
         let force = targetPos.subtract(this.pos).setLength(this.maxAcc)
 

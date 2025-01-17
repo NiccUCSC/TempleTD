@@ -30,7 +30,36 @@ class Entity extends Phaser.GameObjects.Sprite {
         this.frictionAlpha = 0
 
         this.update_sprite()
+
+        // events
+        this.on('pointerover', this.pointerover, this);
+        this.on('pointerout', this.pointerout, this);
+        this.scene.input.on('pointerdown', this.pointerdown, this); // toggles when clicked, deselectes when background clicked
+
+        this.hovering = false
+        this.selected = false
     }
+
+    enablePhysics(shape, size) {
+        // this.scene.physics.world.enable(this);
+
+        // switch (shape) {
+        // case 'rect':
+        //     this.body.setSize(size.x * Entity.tileSize, size.y * Entity.tileSize)
+        //     break
+        // case 'circ':
+        //     this.body.setCircle(size * Entity.tileSize)
+        //     break
+        // }
+    }
+
+    // event functions
+    pointerover() { this.hovering = true }
+
+    pointerout() { this.hovering = false }
+
+    pointerdown() { this.selected = this.hovering && !this.selected }
+
 
     move_with_force(force, dt) {        
         let speed = this.vel.length()
@@ -56,5 +85,9 @@ class Entity extends Phaser.GameObjects.Sprite {
 
     static update_all(time, dt) {
         for (const entity of Entity.entities) entity.update(time, dt)
+    }
+
+    static is_alive(entity) {
+        return Entity.entities.includes(entity)
     }
 }
