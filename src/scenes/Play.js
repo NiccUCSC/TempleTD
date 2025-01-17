@@ -23,7 +23,7 @@ class Play extends Phaser.Scene {
         this.load.path = "./assets/kenny/PNG/Default size/"
         this.load.image("hub", "towerDefense_tile180.png")
         this.load.image("ground", "towerDefense_tile236.png")
-        this.load.image("sand", "towerDefense_tile98.png")
+        this.load.image("sand", "towerDefense_tile098.png")
         this.load.image("enemy", "towerDefense_tile134.png")
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turret", "towerDefense_tile249.png")

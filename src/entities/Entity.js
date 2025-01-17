@@ -90,4 +90,12 @@ class Entity extends Phaser.GameObjects.Sprite {
     static is_alive(entity) {
         return Entity.entities.includes(entity)
     }
+
+    static kill(entity) {
+        console.log(`Killing ${entity.name} at (${entity.pos.x}, ${entity.pos.y})`)
+
+        entity.destroy()
+        const index = Entity.entities.indexOf(entity);
+        if (index != -1) Entity.entities.splice(index, 1);
+    }
 }
