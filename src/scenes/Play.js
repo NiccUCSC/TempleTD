@@ -56,16 +56,16 @@ class Play extends Phaser.Scene {
         this.map.fill(236, 0, 0, this.map.width, this.map.height);  // Fill the entire map with tile index 0
 
 
+
+
         this.player = new Player(this, 0, 0);  // Position at (100, 100)
-        this.hub = new Building(this, 0, 0, "hub", 3)
+        this.hub = new Building(this, 0, 0, "hub", 3, 5)
 
         this.enemy = new Enemy(this, 2, 3)
     }
 
     update(time, dt) {
-
-        this.player.update(time, dt)
-        this.enemy.update(time, dt, this.player)
+        Entity.update_all(time, dt)
 
         this.cam.setZoom(this.zoom(this.vertTiles))
         this.cam.startFollow(this.player.sprite)
