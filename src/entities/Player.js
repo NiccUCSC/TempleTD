@@ -1,6 +1,11 @@
 class Player extends Entity {
     constructor(scene, x, y) {
         super(scene, x, y, "player", 1, 10)
+
+        this.team = 1
+        this.base_dps = 5
+        this.maxHealth = 10
+
         this.cursors = null;   // The input keys for movement
 
         this.maxSpeed = 8               // in tiles / second (determined by friction)
@@ -10,7 +15,9 @@ class Player extends Entity {
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
 
-        super.enablePhysics('circle', 1.5)
+        this.setCircle(0.4 * Entity.tileSize / 2)
+
+        // super.enablePhysics('circle', 0.5)
     }
 
     update(time, dt) {

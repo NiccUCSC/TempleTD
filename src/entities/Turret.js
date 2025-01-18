@@ -8,7 +8,7 @@ class Turret extends Building {
 
         this.targetRadius = targetRadius    
         this.target = null                  // entity aiming for
-        this.fireRate = 1                   // shots per second
+        this.fireRate = 2                   // shots per second
         this.timeTillShoot = 1              // setup time before shooting and time between shots
         this.muzzleVel = 8                 // speed of the bullet in tiles / second when initially shot
         this.aliveBullets = []              // array of bullets currently shot
@@ -23,7 +23,8 @@ class Turret extends Building {
     }
 
     findTarget() {
-        let targets = Entity.entities.filter(entity => entity.name == 'enemy' && this.pos.distance(entity.pos) <= this.targetRadius)
+        let gameObjects = this.scene.children.getChildren();
+        let targets = gameObjects.filter(entity => entity.name == 'enemy' && this.pos.distance(entity.pos) <= this.targetRadius)
         return targets.length ? targets[0] : null
     }
 
@@ -34,11 +35,12 @@ class Turret extends Building {
     }
 
     update(time, dt) {
+
         this.hoverCircle.setVisible(this.hovering || this.selected)     // show targeting range if hovering or selected
 
         if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null   // unfollow targets out of range
 
-        if (!this.target || !Entity.is_alive(this.target)) this.target = this.findTarget()              // find new target if current is not present
+        if (!this.target || !this.is_alive(this.target)) this.target = this.findTarget()              // find new target if current is not present
 
         if (this.target) {                                                                              // rotate towards target
             this.shootPos = this.shootOffset.clone().rotate(this.rotation).add(this.pos)                // update shoot pos based on current pos and rotation

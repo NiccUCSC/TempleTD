@@ -1,17 +1,26 @@
-class Entity extends Phaser.GameObjects.Sprite {
+// class Entity extends Phaser.GameObjects.Sprite {
+class Entity extends Phaser.Physics.Matter.Sprite {
     
     static tileSize = 64
 
-    static entities = []    // list of all entity instances
+    // static entities = []    // list of all entity instances
 
     static debugMode = false
 
-    constructor(scene, x, y, name, scale, zdepth) {
-        super(scene, x, y, name);
+    constructor(scene, x, y, name, scale, zdepth, interactive) {
+        super(scene.matter.world, x, y, name);
+        this.x = x * Entity.tileSize
+        this.y = y * Entity.tileSize
 
-        console.log(`Creating ${name} at (${x}, ${y})`)
-        Entity.entities.push(this)
+        interactive = interactive ?? true // entities are interactive by default
+
+        // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
+        // Entity.entities.push(this)
         scene.add.existing(this);
+
+        this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
+        this.base_dps = 0           // damage per second when colliding with other team
+        this.collidingWith = null   // set of overlapping entities
 
         this.scene = scene;
         this.setOrigin(0.5, 0.5)
@@ -39,35 +48,36 @@ class Entity extends Phaser.GameObjects.Sprite {
         this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
         this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
         this.healthBar = this.scene.add.graphics().setDepth(zdepth);
+        this.alive = true
 
         // events
-        this.on('pointerover', this.pointerover, this);
-        this.on('pointerout', this.pointerout, this);
-        this.scene.input.on('pointerdown', this.pointerdown, this); // toggles when clicked, deselectes when background clicked
+        if (interactive) {
+            this.on('pointerover', this.pointerover, this);
+            this.on('pointerout', this.pointerout, this);
+            this.scene.input.on('pointerdown', this.pointerdown, this); // toggles when clicked, deselectes when background clicked
+        }
 
         this.hovering = false
         this.selected = false
     }
 
     enablePhysics(shape, size) {
-        // this.collider = this.scene.matter.world.add(this)
+        switch (shape) {
+        case 'circle':
+            this.body = this.scene.matter.add.circle(this.x, this.y, size * Entity.tileSize / 2, {
+                isStatic: false, // Make the body immovable
+                restitution: 0.8, // Add bounciness
+            });
+            break
+        case 'rect':
+            break
 
-
-
-        // switch (shape) {
-        // case 'rect':
-        //     this.body.setSize(size.x * Entity.tileSize, size.y * Entity.tileSize)
-        //     break
-        // case 'circ':
-        //     this.collider.setBody({
-        //         type: 'circle',
-        //         radius: size * Entity.tileSize
-        //     });            
-        //     break
+        }
+        this.body.entity = this
+        // this.body.onCollideCallback = (event) => { 
+        //     this.onCollide((event.bodyA.entity == this) ? event.bodyB.entity : event.bodyA.entity)
         // }
-
-        // console.log(`Collider = ${this.collider}`)
-        // console.log(this.collider)
+        this.collidingWith = new Set()
     }
 
     // event functions
@@ -86,15 +96,17 @@ class Entity extends Phaser.GameObjects.Sprite {
         if (!(force.x || force.y) && friction.length() * dt >= this.vel.length()) this.vel.setLength(0)
         else this.vel.add(force.add(friction).scale(dt))
 
-        this.pos.add(this.vel.clone().scale(dt))
+        this.setVelocity(this.vel.x, this.vel.y)
+
+        // this.pos.add(this.vel.clone().scale(dt))
     }
 
     show_healthbar() {
         this.healthBar.clear();
 
-        // if (self.health == self.maxHealth) return
+        if (this.health == this.maxHealth) return
 
-        let screenPos = this.pos.clone().add(this.healthbarOffset).scale(Entity.tileSize)
+        let screenPos = new Phaser.Math.Vector2(this.x, this.y).add(this.healthbarOffset.clone().scale(Entity.tileSize))
         this.healthBar.fillStyle(0x555555, this.zdepth); // Gray background color
         this.healthBar.fillRect(screenPos.x, screenPos.y, this.healthbarSize.x * Entity.tileSize, this.healthbarSize.y * Entity.tileSize);
 
@@ -103,39 +115,80 @@ class Entity extends Phaser.GameObjects.Sprite {
     }
 
     update_sprite(min_vel) {
-        this.x = this.pos.x * Entity.tileSize
-        this.y = this.pos.y * Entity.tileSize
+        this.pos.x = this.x / Entity.tileSize
+        this.pos.y = this.y / Entity.tileSize
         if (this.vel.length() > (min_vel ?? 0)) this.rotation = this.vel.angle()
+
+
     }
+
+    update_physics() {
+        this.body.position.x = this.x
+        this.body.position.y = this.y
+    }
+
+    update_health(dt) {
+        if (this.collidingWith) for (let other of this.collidingWith) {
+            if (other.team != this.team) this.health -= other.base_dps * dt
+        }
+        this.health = Math.min(Math.max(this.health, 0), this.maxHealth)
+        if (!this.health) this.alive = false
+        if (!this.alive) this.destroy()
+    }
+
+    // onCollide(other) {  // called whenever 2 physics bodies are overlapping
+    //     console.log(`Entity ${this.name} colliding with ${other.name}`)
+    //     this.collidingWith.add(other)
+    // }
+
+    // onSeperate(other) {
+    //     console.log(`Entity ${this.name} seperating with ${other.name}`)
+    //     this.collidingWith.delete(other)
+    // }
 
     update(time, dt) {
         return; // update function called every frame for every entity
     }
 
-    static update_all(time, dt) {
-        for (const entity of Entity.entities) {
+    static get_all_entites(scene) {
+        return scene.children.getChildren().filter(obj => obj instanceof Phaser.Physics.Matter.Sprite)
+    }
+
+    static update_all(scene, time, dt) {
+        let entites = Entity.get_all_entites(scene)
+
+        for (const entity of entites) {                 // update positions and physics bodies
             entity.update(time, dt)
+            if (entity.body) entity.update_physics(time, dt)
+        }
+
+        for (const entity of entites) {                 // update health and status effects
+            entity.update_health(dt)
             if (entity.displaysHealth) entity.show_healthbar()
         }
     }
 
-    static is_alive(entity) {
-        return Entity.entities.includes(entity)
-    }
-
-    static kill(entity) {
-        // console.log(`Killing ${entity.name} at (${entity.pos.x}, ${entity.pos.y})`)
-
-        Entity.entities = Entity.entities.filter(item => item !== entity);
-
-        entity.destroy()
-        entity = null
-
-        // console.log(Entity.entities.includes(entity))
+    is_alive(entity) {
+        return this.scene.children.getChildren().includes(entity)
     }
 
     destroy() {
+        // console.log('destroy')
+
+
+        let scene = this.scene
+
+        // console.log(Entity.get_all_entites(scene))
+        if (this.healthBar) {
+            this.healthBar.destroy()
+            this.healthBar = null
+        }
+        this.scene.children.remove(this)
+
+        // console.log("here")
         super.destroy()
-        
+
+        // console.log(Entity.get_all_entites(scene))
+
     }
 }

@@ -36,9 +36,11 @@ class Play extends Phaser.Scene {
 
     create() {
         console.log('Play: create')
+        // Camera
         this.cam = this.cameras.main
         this.cam.centerOn(0, 0)
 
+        // Tilemap ground
         this.map = this.make.tilemap({
             width: 256,  // Map width in tiles
             height: 256, // Map height in tiles
@@ -49,7 +51,6 @@ class Play extends Phaser.Scene {
         this.mapPixelWidth = this.map.width * this.map.tileWidth;
         this.mapPixelHeight = this.map.height * this.map.tileHeight;
 
-
         const tiles = this.map.addTilesetImage('tileset')
         const layer = this.map.createBlankLayer(0, tiles, 
                         -this.mapPixelWidth/2, -this.mapPixelHeight/2);
@@ -57,15 +58,39 @@ class Play extends Phaser.Scene {
 
         this.map.fill(236, 0, 0, this.map.width, this.map.height);  // Fill the entire map with tile index 0
 
+        // physics
+        this.bulletsGroup = this.matter.world.nextGroup(false)
+        this.buildingsGroup = this.matter.world.nextGroup(false)
+        this.movingGroup = this.matter.world.nextGroup(true)
 
-        this.player = new Player(this, 0, 0);  // Position at (100, 100)
-        this.hub = new Building(this, 0, 0, "hub", 3, 5)
+        this.matter.world.disableGravity()
+        // this.matter.world.defaultCollisionFilter.friction = 0;
+
+
+        // this.matter.world.on('collisionstart', (event) => {
+        //     event.pairs.forEach(pair => {
+        //         pair.bodyA.gameObject.onCollide(pair.bodyB.gameObject)
+        //         pair.bodyB.gameObject.onCollide(pair.bodyA.gameObject)
+        //     });
+        // });
+
+        // this.matter.world.on('collisionend', (event) => {
+        //     event.pairs.forEach(pair => {
+        //         pair.bodyA.gameObject.onSeperate(pair.bodyB.gameObject)
+        //         pair.bodyB.gameObject.onSeperate(pair.bodyA.gameObject)
+        //     });
+        // });
+
+        // Entities
+        this.player = new Player(this, -5, 0);  // Position at (100, 100)
+        this.hub = new Building(this, 0, 0, "hub", 0.5, 5)
         this.enemy = new Enemy(this, 2, 3)
-        this.turret = new Turret(this, 5, -3)
+        this.turret = new Turret(this, -5, -1)
+        // this.turret = new Turret(this, 5, -1)
     }
 
     update(time, dt) {
-        Entity.update_all(time / 1000, dt / 1000)
+        Entity.update_all(this, time / 1000, dt / 1000)
 
         this.cam.setZoom(this.zoom(this.vertTiles))
         this.cam.startFollow(this.player)
