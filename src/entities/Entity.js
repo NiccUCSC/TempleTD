@@ -12,7 +12,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         interactive = interactive ?? true // entities are interactive by default
 
-        // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
+        console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
         scene.add.existing(this);
 
         this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
@@ -49,9 +49,9 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         // events
         if (interactive) {
-            this.on('pointerover', this.pointerover, this);
-            this.on('pointerout', this.pointerout, this);
-            this.scene.input.on('pointerdown', this.pointerdown, this); // toggles when clicked, deselectes when background clicked
+            this.on('pointerover', this.pointerover, this)
+            this.on('pointerout', this.pointerout, this)
+            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
         }
 
         this.hovering = false
@@ -75,8 +75,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         else this.vel.add(force.add(friction).scale(dt))
 
         this.setVelocity(this.vel.x * dt * Entity.tileSize, this.vel.y * dt * Entity.tileSize)
-
-        // this.pos.add(this.vel.clone().scale(dt))
     }
 
     show_healthbar() {
@@ -98,11 +96,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         if (this.vel.length() > (min_vel ?? 0)) this.rotation = this.vel.angle()
     }
 
-    update_physics() {
-        this.body.position.x = this.x
-        this.body.position.y = this.y
-    }
-
     update_health(dt) {
         for (let other of this.collidingWith) {
             if (other.team != this.team) this.health -= other.base_dps * dt
@@ -111,15 +104,16 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.health = Math.min(Math.max(this.health, 0), this.maxHealth)
         if (!this.health) this.alive = false
         if (!this.alive) this.destroy()
+        else if (this.displaysHealth) this.show_healthbar()
     }
 
     onCollide(other) {  // called whenever 2 physics bodies are overlapping
-        console.log(`Entity ${this.name} colliding with ${other.name}`)
+        // console.log(`Entity ${this.name} colliding with ${other.name}`)
         this.collidingWith.add(other)
     }
 
     onSeperate(other) {
-        console.log(`Entity ${this.name} seperating with ${other.name}`)
+        // console.log(`Entity ${this.name} seperating with ${other.name}`)
         this.collidingWith.delete(other)
     }
 
@@ -128,7 +122,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     }
 
     static get_all_entites(scene) {
-        return scene.children.getChildren().filter(obj => obj instanceof Phaser.Physics.Matter.Sprite)
+        return scene.children.getChildren().filter(obj => obj instanceof Entity)
     }
 
     static update_all(scene, time, dt) {
@@ -136,16 +130,10 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         for (const entity of entites) {                 // update positions and physics bodies
             entity.update(time, dt)
-            if (entity.body) entity.update_physics(time, dt)
         }
 
         for (const entity of entites) {                 // update health
             entity.update_health(dt)                    // entities die here
-        }
-
-        entites = Entity.get_all_entites(scene)
-        for (const entity of entites) {                 // show healthbar for remaining
-            if (entity.displaysHealth) entity.show_healthbar()
         }
     }
 

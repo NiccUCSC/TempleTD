@@ -87,10 +87,11 @@ class Play extends Phaser.Scene {
 
         // Entities
         this.player = new Player(this, -5, 0);  // Position at (100, 100)
-        this.hub = new Building(this, 0, 0, "hub", 4, 5)
-        this.enemy = new Enemy(this, 2, 3)
-        this.turret = new Turret(this, -5, -1)
-        this.turret = new Turret(this, 5, -1)
+        this.hub = new Hub(this, 0, 0)
+        this.turret = new Turret(this, -5, -5)
+        this.turret = new Turret(this, 5, -5)
+
+        this.spawnZone = new EnemySpawnZone(this, 0, -10)
     }
 
     update(time, dt) {

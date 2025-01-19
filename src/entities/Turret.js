@@ -10,10 +10,9 @@ class Turret extends Building {
 
         this.targetRadius = targetRadius    
         this.target = null                  // entity aiming for
-        this.fireRate = 1                   // shots per second
+        this.fireRate = 10                   // shots per second
         this.timeTillShoot = 1              // setup time before shooting and time between shots
         this.muzzleVel = 8                 // speed of the bullet in tiles / second when initially shot
-        this.aliveBullets = []              // array of bullets currently shot
         this.shootOffset = new Phaser.Math.Vector2(0, -0.4)
         this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel
 
@@ -23,8 +22,7 @@ class Turret extends Building {
         this.hoverCircle.strokeCircle(x * Entity.tileSize, y * Entity.tileSize, targetRadius * Entity.tileSize); // Circle radius 50
         this.hoverCircle.setVisible(false); // Initially hide the circle
 
-        this.setCircle(Entity.tileSize / 2)
-        this.setStatic(true)
+        this.setCircle(Entity.tileSize / 2).setStatic(true)
     }
 
     findTarget() {
