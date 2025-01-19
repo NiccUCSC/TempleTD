@@ -1,14 +1,24 @@
 class Bullet extends Entity {
-    static target_types = ["enemy"]
+    static params = {
 
-    constructor(scene, x, y, name, scale, muzzleSpeed, angle, lifetime) {
-        super(scene, x, y, name, scale, 15, false)
+    }
+
+    constructor(scene, x, y, name, scale, muzzleSpeed, angle, lifetime, params) {
+        super(scene, x, y, name, scale, 15)
+        // super(scene, x, y, params.name, params.scale, Bullet.params.zdepth)
+        // this.loadParams(params)
 
         this.lifetime = lifetime
         this.vel.x = muzzleSpeed 
         this.vel.rotate(angle)
         this.setVelocity(this.vel.x, this.vel.y)
         this.setPosition(this.x, this.y)
+    }
+
+    loadParams(params) {
+        this.lifetime = params.lifetime ?? 3
+        this.vel.x = muzzleSpeed ?? 1
+        this.vel.rotate(params.angle ?? 0)
     }
 
 

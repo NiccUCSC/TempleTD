@@ -1,12 +1,24 @@
 class EnemyTier1 extends Enemy {
-    constructor(scene, x, y) {
-        super(scene, x, y, "enemytier1", gaussianRandom(1, 0.15)) // 
+    static params = {
+        name: "enemytier1",
+        zdepth: 5,
+        interactive: true,
+        base_dps: 1,
+        maxAcc: 8,
+        frictionAlpha: 2,
+        targetRadius: 15,
+    }
 
-        this.initHealthAndStats(4 * this.scale ** 2, 0.05, -1, 1)
-        this.initMovementConstants(2 / this.scale, 8, 2)
+    constructor(scene, x, y, params) {
+        super(scene, x, y, {...EnemyTier1.params, ...EnemyTier1.generateParams(), ...params})
         this.setCircle(0.8 * this.scale * Entity.tileSize / 2)
+    }
 
-        this.target = null
-        this.targetRadius = 15
+    static generateParams(scale = gaussianRandom(1, 0.15)) {
+        return {
+            scale: scale,
+            maxHealth: 4 * scale ** 2,
+            maxSpeed: 2 / scale
+        }
     }
 }

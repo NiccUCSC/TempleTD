@@ -42,7 +42,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.healthRegenRate = 0         // percent of max health gained per second
         this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
         this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
-        this.healthBar = this.scene.add.graphics().setDepth(zdepth);
+        this.healthBar = this.scene.add.graphics().setDepth(100);
         this.alive = true
 
         // events
@@ -60,7 +60,34 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
     // used to pass an object containing many paramaters
     loadParams(params) {
-        return
+        this.name = params.name ?? ""
+        this.scale = params.scale ?? 1
+        this.zdepth = params.zdepth ?? 1
+        this.interactive = params.interactive ?? false
+        if (this.interactive) {
+            this.hovering = params.hovering ?? false
+            this.selected = params.selected ?? false
+            this.on('pointerover', this.pointerover, this)
+            this.on('pointerout', this.pointerout, this)
+            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
+        }
+        this.health = params.maxHealth ?? 1e99
+        this.maxHealth = params.maxHealth ?? 1e99
+        this.healthRegenRate = params.healthRegenRate ?? 0
+        this.displaysHealth = params.displaysHealth ?? true
+        this.alive = params.alive ?? true
+        if (this.displaysHealth) {
+            this.healthbarOffset = params.healthbarOffset ?? new Phaser.Math.Vector2(-0.5, 0.6).scale(this.scale)
+            this.healthbarSize = params.healthbarSize ?? new Phaser.Math.Vector2(this.scale, 0.1)
+            this.healthBar = this.scene.add.graphics().setDepth(100);
+        }
+        this.team = params.team ?? 0
+        this.base_dps = params.base_dps ?? 0
+        this.dps_multiplier = params.dps_multiplier ?? 1
+        this.maxSpeed = params.maxSpeed ?? 0
+        this.maxAcc = params.maxAcc ?? 0
+        this.frictionAlpha = params.frictionAlpha ?? 0
+        this.maxAcc *= 1 + this.frictionAlpha / (this.frictionAlpha + this.maxSpeed)
     }
 
     // untested code to update (a subset) of the paramaters of an entity

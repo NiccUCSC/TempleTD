@@ -1,10 +1,21 @@
 class Enemy extends Entity {
-    constructor(scene, x, y, name, scale) {
-        super(scene, x, y, name, scale, 5)
-        this.targetRadius = 15
+    static params = {
+        zdepth: 6,
+        interactive: true,
+        healthRegenRate: 0.05,
+        team: -1,
+    }
+    
+    constructor(scene, x, y, params) {
+        super(scene, x, y, params.name)
+        this.loadParams(params)
     }
 
-
+    loadParams(params) {
+        this.targetRadius = params.targetRadius ?? 15
+        this.target = params.target ?? null
+        super.loadParams({...Enemy.params, ...params})
+    }
 
     update(time, dt) {
         if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null

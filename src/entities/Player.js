@@ -1,11 +1,22 @@
 class Player extends Entity {
-    constructor(scene, x, y) {
-        super(scene, x, y, "player", 1, 10)
+    static params = {
+        name: "player",
+        zdepth: 5,
+        interactive: true,
+        maxHealth: 10,
+        healthRegenRate: 0.01,
+        team: 1,
+        base_dps: 5,
+        maxSpeed: 8,
+        maxAcc: 50,
+        frictionAlpha: 10,
+    }
+    
+    constructor(scene, x, y, childParams) {
+        super(scene, x, y, Player.params.name)
+        super.loadParams({...Player.params, ...childParams})
 
-        this.initHealthAndStats(10, 0.01, 1, 5)
-        this.initMovementConstants(8, 50, 10)
         this.setCircle(0.4 * Entity.tileSize / 2)
-
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
         this.spawnPos = {x: this.x, y: this.y}
     }

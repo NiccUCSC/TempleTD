@@ -10,7 +10,6 @@ class BulletTier2 extends Bullet {
         this.setSensor(true);
         this.displaysHealth = false
 
-        
         console.log(x, y, this.x, this.y)
 
     }
