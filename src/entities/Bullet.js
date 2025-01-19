@@ -16,9 +16,13 @@ class Bullet extends Entity {
         this.setPosition(this.x, this.y)
 
         this.displaysHealth = false
-        this.health = .2
+        this.maxHealth = 0.2
+        this.health = this.maxHealth
+        this.base_dps = 10
         this.setCircle(0.25 * Entity.tileSize / 2)
+        this.setSensor(true);
 
+        // this.body.debugShowSensor = true;
     }
 
 

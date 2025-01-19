@@ -64,29 +64,33 @@ class Play extends Phaser.Scene {
         this.movingGroup = this.matter.world.nextGroup(true)
 
         this.matter.world.disableGravity()
+        // this.matter.world.engine.timing.timeScale = 0.5;  // No updates will occur
+
         // this.matter.world.defaultCollisionFilter.friction = 0;
 
 
-        // this.matter.world.on('collisionstart', (event) => {
-        //     event.pairs.forEach(pair => {
-        //         pair.bodyA.gameObject.onCollide(pair.bodyB.gameObject)
-        //         pair.bodyB.gameObject.onCollide(pair.bodyA.gameObject)
-        //     });
-        // });
+        this.matter.world.on('collisionstart', (event) => {
+            event.pairs.forEach(pair => {
+                pair.bodyA.gameObject.onCollide(pair.bodyB.gameObject)
+                pair.bodyB.gameObject.onCollide(pair.bodyA.gameObject)
+            });
+        });
 
-        // this.matter.world.on('collisionend', (event) => {
-        //     event.pairs.forEach(pair => {
-        //         pair.bodyA.gameObject.onSeperate(pair.bodyB.gameObject)
-        //         pair.bodyB.gameObject.onSeperate(pair.bodyA.gameObject)
-        //     });
-        // });
+        this.matter.world.on('collisionend', (event) => {
+            event.pairs.forEach(pair => {
+                if (pair.bodyA.gameObject && pair.bodyB.gameObject) {
+                    pair.bodyA.gameObject.onSeperate(pair.bodyB.gameObject)
+                    pair.bodyB.gameObject.onSeperate(pair.bodyA.gameObject)
+                }
+            });
+        });
 
         // Entities
         this.player = new Player(this, -5, 0);  // Position at (100, 100)
-        this.hub = new Building(this, 0, 0, "hub", 0.5, 5)
+        this.hub = new Building(this, 0, 0, "hub", 4, 5)
         this.enemy = new Enemy(this, 2, 3)
         this.turret = new Turret(this, -5, -1)
-        // this.turret = new Turret(this, 5, -1)
+        this.turret = new Turret(this, 5, -1)
     }
 
     update(time, dt) {

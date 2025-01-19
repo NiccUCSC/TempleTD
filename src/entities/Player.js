@@ -5,6 +5,8 @@ class Player extends Entity {
         this.team = 1
         this.base_dps = 5
         this.maxHealth = 10
+        this.health = this.maxHealth
+        this.healthRegenRate = 0.01
 
         this.cursors = null;   // The input keys for movement
 

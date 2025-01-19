@@ -5,10 +5,12 @@ class Turret extends Building {
         super(scene, x, y, "turret", 1, 10)
 
         targetRadius = targetRadius ?? 6
+    
+        this.team = 1
 
         this.targetRadius = targetRadius    
         this.target = null                  // entity aiming for
-        this.fireRate = 2                   // shots per second
+        this.fireRate = 1                   // shots per second
         this.timeTillShoot = 1              // setup time before shooting and time between shots
         this.muzzleVel = 8                 // speed of the bullet in tiles / second when initially shot
         this.aliveBullets = []              // array of bullets currently shot
@@ -20,6 +22,9 @@ class Turret extends Building {
         this.hoverCircle.lineStyle(2, 0x00ff00, 1); // Green outline
         this.hoverCircle.strokeCircle(x * Entity.tileSize, y * Entity.tileSize, targetRadius * Entity.tileSize); // Circle radius 50
         this.hoverCircle.setVisible(false); // Initially hide the circle
+
+        this.setCircle(Entity.tileSize / 2)
+        this.setStatic(true)
     }
 
     findTarget() {

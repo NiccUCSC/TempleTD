@@ -3,8 +3,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     
     static tileSize = 64
 
-    // static entities = []    // list of all entity instances
-
     static debugMode = false
 
     constructor(scene, x, y, name, scale, zdepth, interactive) {
@@ -15,12 +13,11 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         interactive = interactive ?? true // entities are interactive by default
 
         // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
-        // Entity.entities.push(this)
         scene.add.existing(this);
 
         this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
         this.base_dps = 0           // damage per second when colliding with other team
-        this.collidingWith = null   // set of overlapping entities
+        this.collidingWith = new Set()   // set of overlapping entities
 
         this.scene = scene;
         this.setOrigin(0.5, 0.5)
@@ -44,7 +41,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.displaysHealth = true
         this.maxHealth = 10
         this.health = this.maxHealth * 0.8
-        this.healthRegenRate = 0.01         // 1% per second
+        this.healthRegenRate = 0         // percent of max health gained per second
         this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
         this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
         this.healthBar = this.scene.add.graphics().setDepth(zdepth);
@@ -59,25 +56,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         this.hovering = false
         this.selected = false
-    }
-
-    enablePhysics(shape, size) {
-        switch (shape) {
-        case 'circle':
-            this.body = this.scene.matter.add.circle(this.x, this.y, size * Entity.tileSize / 2, {
-                isStatic: false, // Make the body immovable
-                restitution: 0.8, // Add bounciness
-            });
-            break
-        case 'rect':
-            break
-
-        }
-        this.body.entity = this
-        // this.body.onCollideCallback = (event) => { 
-        //     this.onCollide((event.bodyA.entity == this) ? event.bodyB.entity : event.bodyA.entity)
-        // }
-        this.collidingWith = new Set()
     }
 
     // event functions
@@ -96,7 +74,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         if (!(force.x || force.y) && friction.length() * dt >= this.vel.length()) this.vel.setLength(0)
         else this.vel.add(force.add(friction).scale(dt))
 
-        this.setVelocity(this.vel.x, this.vel.y)
+        this.setVelocity(this.vel.x * dt * Entity.tileSize, this.vel.y * dt * Entity.tileSize)
 
         // this.pos.add(this.vel.clone().scale(dt))
     }
@@ -118,8 +96,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.pos.x = this.x / Entity.tileSize
         this.pos.y = this.y / Entity.tileSize
         if (this.vel.length() > (min_vel ?? 0)) this.rotation = this.vel.angle()
-
-
     }
 
     update_physics() {
@@ -128,23 +104,24 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     }
 
     update_health(dt) {
-        if (this.collidingWith) for (let other of this.collidingWith) {
+        for (let other of this.collidingWith) {
             if (other.team != this.team) this.health -= other.base_dps * dt
         }
+        this.health += this.maxHealth * this.healthRegenRate * dt
         this.health = Math.min(Math.max(this.health, 0), this.maxHealth)
         if (!this.health) this.alive = false
         if (!this.alive) this.destroy()
     }
 
-    // onCollide(other) {  // called whenever 2 physics bodies are overlapping
-    //     console.log(`Entity ${this.name} colliding with ${other.name}`)
-    //     this.collidingWith.add(other)
-    // }
+    onCollide(other) {  // called whenever 2 physics bodies are overlapping
+        console.log(`Entity ${this.name} colliding with ${other.name}`)
+        this.collidingWith.add(other)
+    }
 
-    // onSeperate(other) {
-    //     console.log(`Entity ${this.name} seperating with ${other.name}`)
-    //     this.collidingWith.delete(other)
-    // }
+    onSeperate(other) {
+        console.log(`Entity ${this.name} seperating with ${other.name}`)
+        this.collidingWith.delete(other)
+    }
 
     update(time, dt) {
         return; // update function called every frame for every entity
@@ -162,8 +139,12 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             if (entity.body) entity.update_physics(time, dt)
         }
 
-        for (const entity of entites) {                 // update health and status effects
-            entity.update_health(dt)
+        for (const entity of entites) {                 // update health
+            entity.update_health(dt)                    // entities die here
+        }
+
+        entites = Entity.get_all_entites(scene)
+        for (const entity of entites) {                 // show healthbar for remaining
             if (entity.displaysHealth) entity.show_healthbar()
         }
     }
@@ -174,21 +155,8 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
     destroy() {
         // console.log('destroy')
-
-
-        let scene = this.scene
-
-        // console.log(Entity.get_all_entites(scene))
-        if (this.healthBar) {
-            this.healthBar.destroy()
-            this.healthBar = null
-        }
-        this.scene.children.remove(this)
-
-        // console.log("here")
+        for (let entity of Entity.get_all_entites(this.scene)) entity.collidingWith.delete(this)
+        if (this.healthBar) this.healthBar.destroy()
         super.destroy()
-
-        // console.log(Entity.get_all_entites(scene))
-
     }
 }

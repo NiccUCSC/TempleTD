@@ -6,6 +6,7 @@ class Enemy extends Entity {
         this.base_dps = 1
         this.maxHealth = 4
         this.health = 4
+        this.healthRegenRate = 0.05
 
         this.maxSpeed = 2      // in tiles / second (determined by friction)
         this.maxAcc = 8        // in tiles / second ^ 2
