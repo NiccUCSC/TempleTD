@@ -7,7 +7,13 @@ class Player extends Entity {
         this.setCircle(0.4 * Entity.tileSize / 2)
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
+        this.spawnPos = {x: this.x, y: this.y}
+    }
 
+    onDeath() {
+        this.alive = true
+        this.setPosition(this.spawnPos.x, this.spawnPos.y)
+        this.health = this.maxHealth
     }
 
     update(time, dt) {

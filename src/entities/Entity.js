@@ -129,9 +129,14 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.health += this.maxHealth * this.healthRegenRate * dt
         this.health = Math.min(Math.max(this.health, 0), this.maxHealth)
         if (!this.health) this.alive = false
-        if (!this.alive) this.destroy()
+        if (!this.alive) {
+            this.onDeath()  // respawning and game over occurs here
+            if (!this.alive) this.destroy()
+        }
         else if (this.displaysHealth) this.show_healthbar()
     }
+
+    onDeath() { return }
 
     onCollide(other) {  // called whenever 2 physics bodies are overlapping
         // console.log(`Entity ${this.name} colliding with ${other.name}`)
