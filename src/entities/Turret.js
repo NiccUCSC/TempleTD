@@ -1,28 +1,30 @@
 class Turret extends Building {
-    static target_types = ["enemy"]
+    constructor(scene, x, y, params = {}) {
+        super(scene, x, y, params.name ?? "turrettier1", params.scale, 10, params.targetRadius ?? 6, params.logisticsRadius ?? 10)
+        this.loadParams(params)
+        this.initHealthAndStats(params.maxHealth, params.healthRegenRate, params.base_dps)
+        this.setCircle(1.2 * params.scale * Entity.tileSize / 2).setStatic(true)
 
-    constructor(scene, x, y) {
-        super(scene, x, y, "turret", 1, 10, 6, 10)
-    
-        this.initHealthAndStats(10, 0.01, 1)
-
-        this.target = null                  // entity aiming for
-        this.fireRate = 1                   // shots per second
-        this.timeTillShoot = 1              // setup time before shooting and time between shots
-        this.muzzleVel = 10                 // speed of the bullet in tiles / second when initially shot
-        this.shootOffset = new Phaser.Math.Vector2(0, -0.4)
-        this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel
-
-        this.setCircle(1.2 * Entity.tileSize / 2).setStatic(true)
-
-        this.projectileType = BulletTier2
+        this.target = null                      // entity aiming for
+        this.timeTillShoot = 0                  // setup time before shooting and time between shots
+        this.shootPos = null                    // location of the end of the barrel (bullet spawn location updated every shot)
     }
 
-    // findTarget() {
-    //     let gameObjects = this.scene.children.getChildren();
-    //     let targets = gameObjects.filter(entity => entity.name == 'enemy' && this.pos.distance(entity.pos) <= this.targetRadius)
-    //     return targets.length ? targets[0] : null
-    // }
+    loadParams(params) {
+        this.fireRate = params.fireRate ?? 1            // shots per second
+        this.muzzleVel = params.muzzleVel ?? 10         // speed of the bullet in tiles / second when initially shot
+
+        this.shootOffset = params.shootOffset ??
+            [new Phaser.Math.Vector2(0, -0.5)]          // array of offsets to the end of the barrel from center of sprite
+        for (let offset of this.shootOffset) offset.scale(this.scale)
+        this.projectileType = params.projectileType 
+            ?? BulletTier1                              // projectile class
+
+        console.log(params.shootOffset, params.shootOffset.length)
+        this.barrelCount = params.shootOffset.length
+        this.barrelIndex = 0
+        super.loadParams(params)
+    }
 
     targetInterceptPos() {  // approximate location for intercept between bullet and target
         let targetDistance = this.shootPos.distance(this.target.pos)
@@ -39,7 +41,8 @@ class Turret extends Building {
             this.target = this.find_closest_target(this.targetRadius, -1)                               // find new target if current is not present
 
         if (this.target) {                                                                              // rotate towards target
-            this.shootPos = this.shootOffset.clone().rotate(this.rotation).add(this.pos)                // update shoot pos based on current pos and rotation
+            let offset = this.shootOffset[this.barrelIndex].clone()         // gets the offset for the current barrel firing
+            this.shootPos = offset.rotate(this.rotation).add(this.pos)      // update shoot pos based on current pos and rotation
             let targetOffset = this.targetInterceptPos().subtract(this.shootPos)
             this.rotation = targetOffset.angle() + Math.PI / 2
         }
@@ -47,6 +50,8 @@ class Turret extends Building {
         if (this.timeTillShoot > 0) this.timeTillShoot -= dt    // always prepare next shot
         if (this.timeTillShoot <= 0 && this.target) {           // shoot when target present
             this.timeTillShoot += 1 / this.fireRate
+            this.barrelIndex = (this.barrelIndex + 1) % this.barrelCount    // cycle to next barrel
+            console.log(`shooting from ${this.barrelIndex} of ${this.barrelCount}`)
             new this.projectileType(this.scene, this.shootPos.x, this.shootPos.y, this.muzzleVel, this.rotation - Math.PI / 2)
         }
     }

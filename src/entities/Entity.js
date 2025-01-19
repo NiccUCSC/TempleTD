@@ -58,6 +58,16 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.update_sprite()
     }
 
+    // used to pass an object containing many paramaters
+    loadParams(params) {
+        return
+    }
+
+    // untested code to update (a subset) of the paramaters of an entity
+    updateParams(params) {
+        Object.keys(params).forEach(key => {if (key in this) this[key] = params[key]})
+    }
+
     // set functions
     initHealthAndStats(maxHealth, healthRegenRate, team, base_dps) {
         this.health = maxHealth
