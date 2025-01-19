@@ -16,7 +16,9 @@ class Play extends Phaser.Scene {
         this.load.image("hub", "towerDefense_tile180.png")
         this.load.image("ground", "towerDefense_tile236.png")
         this.load.image("sand", "towerDefense_tile098.png")
-        this.load.image("enemytier1", "towerDefense_tile134.png")
+        this.load.image("spawnzone", "towerDefense_tile130.png")
+        this.load.image("enemytier1", "towerDefense_tile132.png")
+        this.load.image("enemytier2", "towerDefense_tile134.png")
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turret", "towerDefense_tile249.png")
         this.load.image("rocket", "towerDefense_tile251.png")
@@ -92,7 +94,8 @@ class Play extends Phaser.Scene {
         this.turret = new Turret(this, -2, -3)
         this.turret = new Turret(this, 2, -3)
 
-        this.spawnZone = new EnemySpawnZone(this, 0, -20)
+        this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, 0.25, EnemyTier1, 1)
+        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, 0.25, EnemyTier2, 2)
     }
 
     update(time, dt) {

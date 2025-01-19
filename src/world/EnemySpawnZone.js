@@ -1,12 +1,8 @@
 class EnemySpawnZone extends Entity {
 
     // Add enemy spawning with variance (some enemies have more health and move slower)
-    constructor(scene, x, y, name, scale, zdepth) {
-        super(scene, x, y, name, scale, zdepth)
-
-        let spawnRadius = 2
-
-        this.spawnRadius = spawnRadius
+    constructor(scene, x, y, spawnRate = 1, enemyType = EnemyTier1, spawnRadius = 1) {
+        super(scene, x, y, "spawnzone", spawnRadius * 2, 10)
 
         this.hoverCircle = scene.add.graphics();
         this.hoverCircle.lineStyle(2, 0xff0000, 1); // Green outline
@@ -15,8 +11,10 @@ class EnemySpawnZone extends Entity {
         this.maxHealth = 1e70
         this.health = this.maxHealth
 
-        this.spawnRate = 1 / 3  // number of enemy spawns per second
-        this.timeTillSpawn = 1
+        this.spawnRate = spawnRate          // number of enemy spawns per second
+        this.spawnType = enemyType          // class of enemies spawning
+        this.spawnRadius = spawnRadius
+        this.timeTillSpawn = 0      // time till next spawn
 
         this.setCircle(spawnRadius * Entity.tileSize)
         this.setSensor(true);
@@ -31,7 +29,8 @@ class EnemySpawnZone extends Entity {
             const angle = Math.random() * 2 * Math.PI;
             // const r = this.spawnRadius * Math.sqrt(Math.random());
             const r = this.spawnRadius * Math.random();
-            new EnemyTier1(this.scene, this.pos.x + r * Math.cos(angle), this.pos.y + r * Math.sin(angle))
+
+            new this.spawnType(this.scene, this.pos.x + r * Math.cos(angle), this.pos.y + r * Math.sin(angle))
         }
 
     }
