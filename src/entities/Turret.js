@@ -14,6 +14,8 @@ class Turret extends Building {
         this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel
 
         this.setCircle(1.2 * Entity.tileSize / 2).setStatic(true)
+
+        this.projectileType = BulletTier2
     }
 
     // findTarget() {
@@ -45,7 +47,7 @@ class Turret extends Building {
         if (this.timeTillShoot > 0) this.timeTillShoot -= dt    // always prepare next shot
         if (this.timeTillShoot <= 0 && this.target) {           // shoot when target present
             this.timeTillShoot += 1 / this.fireRate
-            new Bullet(this.scene, this.shootPos.x, this.shootPos.y, this.muzzleVel, this.rotation - Math.PI / 2)
+            new this.projectileType(this.scene, this.shootPos.x, this.shootPos.y, this.muzzleVel, this.rotation - Math.PI / 2)
         }
     }
 }

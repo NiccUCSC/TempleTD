@@ -1,15 +1,15 @@
-class EnemySpawnZone extends Entity {
+class EnemySpawnZone extends Building {
 
     // Add enemy spawning with variance (some enemies have more health and move slower)
     constructor(scene, x, y, spawnRate = 1, enemyType = EnemyTier1, spawnRadius = 1) {
         super(scene, x, y, "spawnzone", spawnRadius * 2, 10)
 
+        this.initHealthAndStats(100, 0.01, -10)
+
         this.hoverCircle = scene.add.graphics();
         this.hoverCircle.lineStyle(2, 0xff0000, 1); // Green outline
         this.hoverCircle.strokeCircle(x * Entity.tileSize, y * Entity.tileSize, spawnRadius * Entity.tileSize); // Circle radius 50
 
-        this.maxHealth = 1e70
-        this.health = this.maxHealth
 
         this.spawnRate = spawnRate          // number of enemy spawns per second
         this.spawnType = enemyType          // class of enemies spawning
