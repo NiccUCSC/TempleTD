@@ -13,14 +13,14 @@ class Turret extends Building {
         this.shootOffset = new Phaser.Math.Vector2(0, -0.4)
         this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel
 
-        this.setCircle(Entity.tileSize / 2).setStatic(true)
+        this.setCircle(1.2 * Entity.tileSize / 2).setStatic(true)
     }
 
-    findTarget() {
-        let gameObjects = this.scene.children.getChildren();
-        let targets = gameObjects.filter(entity => entity.name == 'enemy' && this.pos.distance(entity.pos) <= this.targetRadius)
-        return targets.length ? targets[0] : null
-    }
+    // findTarget() {
+    //     let gameObjects = this.scene.children.getChildren();
+    //     let targets = gameObjects.filter(entity => entity.name == 'enemy' && this.pos.distance(entity.pos) <= this.targetRadius)
+    //     return targets.length ? targets[0] : null
+    // }
 
     targetInterceptPos() {  // approximate location for intercept between bullet and target
         let targetDistance = this.shootPos.distance(this.target.pos)
@@ -33,7 +33,8 @@ class Turret extends Building {
 
         if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null   // unfollow targets out of range
 
-        if (!this.target || !this.is_alive(this.target)) this.target = this.findTarget()              // find new target if current is not present
+        if (!this.target || !this.is_alive(this.target)) 
+            this.target = this.find_closest_target(this.targetRadius, -1)                               // find new target if current is not present
 
         if (this.target) {                                                                              // rotate towards target
             this.shootPos = this.shootOffset.clone().rotate(this.rotation).add(this.pos)                // update shoot pos based on current pos and rotation

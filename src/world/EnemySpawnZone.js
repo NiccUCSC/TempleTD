@@ -15,7 +15,7 @@ class EnemySpawnZone extends Entity {
         this.maxHealth = 1e70
         this.health = this.maxHealth
 
-        this.spawnRate = 0.25  // number of enemy spawns per second
+        this.spawnRate = 1 / 3  // number of enemy spawns per second
         this.timeTillSpawn = 1
 
         this.setCircle(spawnRadius * Entity.tileSize)
@@ -30,8 +30,8 @@ class EnemySpawnZone extends Entity {
 
             const angle = Math.random() * 2 * Math.PI;
             // const r = this.spawnRadius * Math.sqrt(Math.random());
-            const r = this.spawnRadius *Math.random();
-            new Enemy(this.scene, this.pos.x + r * Math.cos(angle), this.pos.y + r * Math.sin(angle))
+            const r = this.spawnRadius * Math.random();
+            new EnemyTier1(this.scene, this.pos.x + r * Math.cos(angle), this.pos.y + r * Math.sin(angle))
         }
 
     }

@@ -1,17 +1,15 @@
 class Enemy extends Entity {
-    constructor(scene, x, y) {
-        super(scene, x, y, "enemy", 1, 20)
-
-        this.initHealthAndStats(4, 0.05, -1)
-        this.initMovementConstants(2, 8, 2)
-        this.setCircle(0.8 * Entity.tileSize / 2)
-
-        this.base_dps = 1
-        this.target = null
+    constructor(scene, x, y, name, scale) {
+        super(scene, x, y, name, scale, 5)
+        this.targetRadius = 15
     }
 
+
+
     update(time, dt) {
-        if (!this.target) this.target = this.find_closest_target(10, 1)
+        if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null
+
+        if (!this.target || !this.is_alive(this.target)) this.target = this.find_closest_target(this.targetRadius, 1)
 
         let targetPos = this.target ? this.target.pos.clone() : new Phaser.Math.Vector2(0, 0)
 

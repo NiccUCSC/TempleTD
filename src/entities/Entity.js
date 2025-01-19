@@ -59,11 +59,12 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     }
 
     // set functions
-    initHealthAndStats(maxHealth, healthRegenRate, team, ) {
+    initHealthAndStats(maxHealth, healthRegenRate, team, base_dps) {
         this.health = maxHealth
         this.maxHealth = maxHealth
         this.healthRegenRate = healthRegenRate
         this.team = team
+        this.base_dps = base_dps ?? 0
     }
 
     initMovementConstants(maxSpeed, maxAcc, frictionAlpha) {

@@ -1,15 +1,4 @@
 class Play extends Phaser.Scene {
-
-    cam
-
-    vertTiles = 15 // number of tiles visable vertically
-    
-    zoom = (tiles) => { return 2 * game.config.height / 64 / tiles } 
-
-    maxZoom = this.zoom(10)
-    minZoom = this.zoom(80)
-
-
     constructor() {
         super('playScene')
         console.log('Play: constructor')
@@ -17,6 +6,9 @@ class Play extends Phaser.Scene {
 
     init() {
         console.log('Play: init')
+        this.vertTiles = 25
+        this.zoom = tiles => 2 * game.config.height / 64 / tiles
+
     }
 
     preload() {
@@ -24,7 +16,7 @@ class Play extends Phaser.Scene {
         this.load.image("hub", "towerDefense_tile180.png")
         this.load.image("ground", "towerDefense_tile236.png")
         this.load.image("sand", "towerDefense_tile098.png")
-        this.load.image("enemy", "towerDefense_tile134.png")
+        this.load.image("enemytier1", "towerDefense_tile134.png")
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turret", "towerDefense_tile249.png")
         this.load.image("rocket", "towerDefense_tile251.png")
@@ -97,10 +89,10 @@ class Play extends Phaser.Scene {
         // Entities
         this.player = new Player(this, 0, -3);  // Position at (100, 100)
         this.hub = new Hub(this, 0, 0)
-        this.turret = new Turret(this, -5, -5)
-        this.turret = new Turret(this, 5, -5)
+        this.turret = new Turret(this, -2, -3)
+        this.turret = new Turret(this, 2, -3)
 
-        this.spawnZone = new EnemySpawnZone(this, 0, -10)
+        this.spawnZone = new EnemySpawnZone(this, 0, -20)
     }
 
     update(time, dt) {
