@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turret", "towerDefense_tile249.png")
         this.load.image("rocket", "towerDefense_tile251.png")
-        this.load.image("bullet", "towerDefense_tile272.png")
+        this.load.image("bullet", "towerDefense_tile273.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")
@@ -39,6 +39,15 @@ class Play extends Phaser.Scene {
         // Camera
         this.cam = this.cameras.main
         this.cam.centerOn(0, 0)
+
+        this.input.on('wheel', (pointer, dx, dy, dz, event) => {
+            if (pointer.deltaY < 0) {
+                this.vertTiles *= 1.02
+            } else {
+                this.vertTiles /= 1.02
+            }
+            this.vertTiles = this.vertTiles > 5 ? this.vertTiles < 80 ? this.vertTiles : 80 : 5
+        })
 
         // Tilemap ground
         this.map = this.make.tilemap({
@@ -86,7 +95,7 @@ class Play extends Phaser.Scene {
         });
 
         // Entities
-        this.player = new Player(this, -5, 0);  // Position at (100, 100)
+        this.player = new Player(this, 0, -3);  // Position at (100, 100)
         this.hub = new Hub(this, 0, 0)
         this.turret = new Turret(this, -5, -5)
         this.turret = new Turret(this, 5, -5)

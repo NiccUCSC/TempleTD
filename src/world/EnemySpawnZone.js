@@ -15,8 +15,8 @@ class EnemySpawnZone extends Entity {
         this.maxHealth = 1e70
         this.health = this.maxHealth
 
-        this.spawnRate = 2  // number of enemy spawns per second
-        this.timeTillSpawn = 3
+        this.spawnRate = 0.25  // number of enemy spawns per second
+        this.timeTillSpawn = 1
 
         this.setCircle(spawnRadius * Entity.tileSize)
         this.setSensor(true);

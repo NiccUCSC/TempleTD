@@ -1,26 +1,17 @@
 class Turret extends Building {
     static target_types = ["enemy"]
 
-    constructor(scene, x, y, targetRadius) {
-        super(scene, x, y, "turret", 1, 10)
-
-        targetRadius = targetRadius ?? 6
+    constructor(scene, x, y) {
+        super(scene, x, y, "turret", 1, 10, 6, 10)
     
-        this.team = 1
+        this.initHealthAndStats(10, 0.01, 1)
 
-        this.targetRadius = targetRadius    
         this.target = null                  // entity aiming for
-        this.fireRate = 10                   // shots per second
+        this.fireRate = 1                   // shots per second
         this.timeTillShoot = 1              // setup time before shooting and time between shots
-        this.muzzleVel = 8                 // speed of the bullet in tiles / second when initially shot
+        this.muzzleVel = 10                 // speed of the bullet in tiles / second when initially shot
         this.shootOffset = new Phaser.Math.Vector2(0, -0.4)
         this.shootPos = this.pos.clone().add(this.shootOffset)  // location of the end of the barrel
-
-        this.setInteractive();
-        this.hoverCircle = scene.add.graphics();
-        this.hoverCircle.lineStyle(2, 0x00ff00, 1); // Green outline
-        this.hoverCircle.strokeCircle(x * Entity.tileSize, y * Entity.tileSize, targetRadius * Entity.tileSize); // Circle radius 50
-        this.hoverCircle.setVisible(false); // Initially hide the circle
 
         this.setCircle(Entity.tileSize / 2).setStatic(true)
     }
@@ -38,8 +29,7 @@ class Turret extends Building {
     }
 
     update(time, dt) {
-
-        this.hoverCircle.setVisible(this.hovering || this.selected)     // show targeting range if hovering or selected
+        super.update(time, dt)
 
         if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null   // unfollow targets out of range
 

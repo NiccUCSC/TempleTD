@@ -4,11 +4,13 @@ class Bullet extends Entity {
     constructor(scene, x, y, muzzleSpeed, angle, lifetime) {
         super(scene, x, y, "bullet", 1, 15, false)
 
-        this.team = 1
+        this.team = 2
 
         this.maxSpeed = 40
         this.maxAcc = 10
         this.frictionAlpha = 0
+
+
         this.lifetime = lifetime ?? 3
         this.vel.x = muzzleSpeed 
         this.vel.rotate(angle)
@@ -18,11 +20,9 @@ class Bullet extends Entity {
         this.displaysHealth = false
         this.maxHealth = 0.2
         this.health = this.maxHealth
-        this.base_dps = 10
+        this.base_dps = 0.7
         this.setCircle(0.25 * Entity.tileSize / 2)
         this.setSensor(true);
-
-        // this.body.debugShowSensor = true;
     }
 
 
@@ -33,5 +33,9 @@ class Bullet extends Entity {
 
         super.move_with_force(new Phaser.Math.Vector2(0, 0), dt)
         super.update_sprite()
+
+        let speed = this.vel.length()
+        // console.log(speed)
+        this.dps_multiplier = speed * (1 + speed / 10)
     }
 }

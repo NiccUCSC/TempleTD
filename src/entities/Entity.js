@@ -3,8 +3,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     
     static tileSize = 64
 
-    static debugMode = false
-
     constructor(scene, x, y, name, scale, zdepth, interactive) {
         super(scene.matter.world, x, y, name);
         this.x = x * Entity.tileSize
@@ -12,12 +10,8 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         interactive = interactive ?? true // entities are interactive by default
 
-        console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
+        // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
         scene.add.existing(this);
-
-        this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
-        this.base_dps = 0           // damage per second when colliding with other team
-        this.collidingWith = new Set()   // set of overlapping entities
 
         this.scene = scene;
         this.setOrigin(0.5, 0.5)
@@ -27,6 +21,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.scale = scale
         this.zdepth = zdepth
 
+        // physics
         this.pos = new Phaser.Math.Vector2(x, y)
         this.vel = new Phaser.Math.Vector2(0, 0)
         this.acc = new Phaser.Math.Vector2(0, 0)
@@ -34,13 +29,16 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         this.maxAcc = 0
         this.maxSpeed = 0
         this.frictionAlpha = 0
-
-        this.update_sprite()
+        this.collidingWith = new Set()   // set of overlapping entities
 
         // Health and stats
         this.displaysHealth = true
-        this.maxHealth = 10
-        this.health = this.maxHealth * 0.8
+        this.maxHealth = 1
+        this.health = this.maxHealth
+        this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
+        this.base_dps = 0           // damage per second when colliding with other team
+        this.dps_multiplier = 1     // scales the damage
+
         this.healthRegenRate = 0         // percent of max health gained per second
         this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
         this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
@@ -56,6 +54,23 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         this.hovering = false
         this.selected = false
+
+        this.update_sprite()
+    }
+
+    // set functions
+    initHealthAndStats(maxHealth, healthRegenRate, team, ) {
+        this.health = maxHealth
+        this.maxHealth = maxHealth
+        this.healthRegenRate = healthRegenRate
+        this.team = team
+    }
+
+    initMovementConstants(maxSpeed, maxAcc, frictionAlpha) {
+        this.maxSpeed = maxSpeed                                        // in tiles / second (determined by friction)
+        this.maxAcc = maxAcc                                            // in tiles / second ^ 2
+        this.frictionAlpha = frictionAlpha                              // friction force minimum
+        this.maxAcc *= 1 + frictionAlpha / (frictionAlpha + maxSpeed)   // fix acceleration due to friction alpha
     }
 
     // event functions
@@ -98,7 +113,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
     update_health(dt) {
         for (let other of this.collidingWith) {
-            if (other.team != this.team) this.health -= other.base_dps * dt
+            if (other.team * this.team < 0) this.health -= other.base_dps * other.dps_multiplier * dt
         }
         this.health += this.maxHealth * this.healthRegenRate * dt
         this.health = Math.min(Math.max(this.health, 0), this.maxHealth)
@@ -139,6 +154,22 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
     is_alive(entity) {
         return this.scene.children.getChildren().includes(entity)
+    }
+
+    // loops through all entities and returns the closest target in range
+    find_closest_target(range, team, location) {
+        location ??= this.pos
+
+        let entities = Entity.get_all_entites(this.scene).filter(entity => entity.team == team)
+        if (!entities.length) return null
+
+        let dist2 = (a, b) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2
+
+        const closest = entities.reduce((curr, next) => { 
+            return dist2(location, next.pos) < dist2(location, curr.pos) ? next : curr; 
+        });
+
+        return dist2(location, closest.pos) <= range ** 2 ? closest : null
     }
 
     destroy() {

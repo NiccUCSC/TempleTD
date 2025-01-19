@@ -18,8 +18,6 @@ class Player extends Entity {
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement
 
         this.setCircle(0.4 * Entity.tileSize / 2)
-
-        // super.enablePhysics('circle', 0.5)
     }
 
     update(time, dt) {
@@ -30,7 +28,6 @@ class Player extends Entity {
         force.setLength(this.maxAcc)
 
         super.move_with_force(force, dt)
-
         super.update_sprite()
     }
 }
