@@ -28,6 +28,7 @@ class Play extends Phaser.Scene {
         this.load.path = "./assets/images/"
         this.load.image("enemytier1", "EnemyTier1.png")
         this.load.image("enemytier2", "EnemyTier2.png")
+        this.load.image("enemytier3", "EnemyTier3.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")
@@ -108,15 +109,23 @@ class Play extends Phaser.Scene {
         this.turret2 = new TurretTier2(this, 2, -3)
 
         this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
-            spawnRate: 1,
+            spawnRate: 100,
             spawnRadius: 1,
             spawnType: EnemyTier1,
         })
-        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
-            spawnRate: .5,
-            spawnRadius: 2,
-            spawnType: EnemyTier2,
-        })
+
+        // this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
+        //     spawnRate: .5,
+        //     spawnRadius: 2,
+        //     spawnType: EnemyTier2,
+        // })
+
+
+        // this.t3SpawnZone = new EnemySpawnZone(this, 0, -25, {
+        //     spawnRate: .05,
+        //     spawnRadius: 3,
+        //     spawnType: EnemyTier3,
+        // })
     }
 
     update(time, dt) {

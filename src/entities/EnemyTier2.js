@@ -1,8 +1,6 @@
 class EnemyTier2 extends Enemy {
     static params = {
         name: "enemytier2",
-        zdepth: 5,
-        interactive: true,
         base_dps: 4,
         maxAcc: 40,
         frictionAlpha: 2,
@@ -15,7 +13,7 @@ class EnemyTier2 extends Enemy {
         this.setCircle(0.8 * this.tileScale * Entity.tileSize / 2)
     }
 
-    static generateParams(scale = gaussianRandom(2, 0.15)) {
+    static generateParams(scale = gaussianRandom(1.6, 0.15)) {
         return {
             scale: scale,
             maxHealth: 10 * scale ** 2,
