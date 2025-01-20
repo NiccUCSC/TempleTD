@@ -14,7 +14,7 @@ let config = {
         default: 'matter',
         matter: {
             // fps: 5, // Set the physics update rate to 30 frames per second
-            debug: true,
+            debug: false,
         }
     },
     // width: 1280,
