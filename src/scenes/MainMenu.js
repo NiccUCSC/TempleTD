@@ -7,6 +7,7 @@ class MainMenu extends Phaser.Scene {
     create() {
         console.log('MainMenu: create')
         this.scene.start('playScene')
+        this.scene.start('uiScene')
     }
 
     init() {

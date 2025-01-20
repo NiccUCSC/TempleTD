@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
             spawnType: EnemyTier1,
         })
         this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
-            spawnRate: 1,
+            spawnRate: .5,
             spawnRadius: 2,
             spawnType: EnemyTier2,
         })
