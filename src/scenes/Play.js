@@ -57,11 +57,18 @@ class Play extends Phaser.Scene {
         this.mapPixelHeight = this.map.height * this.map.tileHeight;
 
         const tiles = this.map.addTilesetImage('tileset')
-        const layer = this.map.createBlankLayer(0, tiles, 
+
+        const groundLayer = this.map.createBlankLayer(0, tiles, 
                         -this.mapPixelWidth/2, -this.mapPixelHeight/2);
+        groundLayer.fill(236, 0, 0, this.map.width, this.map.height);
 
+        // Ore generation
+        const oreLayer = this.map.createBlankLayer(1, tiles, 
+                            -this.mapPixelWidth/2, -this.mapPixelHeight/2,
+                            );
+        TerrainGeneration.generateOre(oreLayer);
 
-        this.map.fill(236, 0, 0, this.map.width, this.map.height);  // Fill the entire map with tile index 0
+        
 
         // physics
         this.bulletsGroup = this.matter.world.nextGroup(false)
