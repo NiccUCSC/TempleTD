@@ -96,8 +96,16 @@ class Play extends Phaser.Scene {
         this.turret1 = new TurretTier1(this, -2, -3)
         this.turret2 = new TurretTier2(this, 2, -3)
 
-        this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, 1, EnemyTier1, 1)
-        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, 1, EnemyTier2, 2)
+        this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
+            spawnRate: 1,
+            spawnRadius: 1,
+            spawnType: EnemyTier1,
+        })
+        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
+            spawnRate: 1,
+            spawnRadius: 2,
+            spawnType: EnemyTier2,
+        })
     }
 
     update(time, dt) {

@@ -10,7 +10,8 @@ class EnemyTier1 extends Enemy {
     }
 
     constructor(scene, x, y, params) {
-        super(scene, x, y, {...EnemyTier1.params, ...EnemyTier1.generateParams(), ...params})
+        params = {...EnemyTier1.params, ...EnemyTier1.generateParams(), ...params}
+        super(scene, x, y, params)
         this.setCircle(0.8 * this.scale * Entity.tileSize / 2)
     }
 

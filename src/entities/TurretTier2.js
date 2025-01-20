@@ -14,6 +14,7 @@ class TurretTier2 extends Turret {
     }
 
     constructor(scene, x, y, params) {
-        super(scene, x, y, {...TurretTier2.params, ...params})
+        params = {...TurretTier2.params, ...params}
+        super(scene, x, y, params)
     }
 }

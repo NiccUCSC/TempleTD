@@ -1,21 +1,27 @@
 class Building extends Entity {
-    constructor(scene, x, y, name, scale, zdepth, targetRadius, logisticRadius) {
-        super(scene, x, y, name, scale, zdepth)
+    static params = {
+        zdepth: 10,
+        interactive: true,
+        maxHealth: 10,
+        healthRegenRate: 0.01,
+        targetRadius: 6,
+        logisticRadius: 10,
+    }
 
-        this.targetRadius = targetRadius
-        this.logisticRadius = logisticRadius
+    constructor(scene, x, y, params) {
+        params = {...Building.params, ...params}
+        super(scene, x, y, params)
+        Building.loadParams(this, params)
+    }
 
-        this.setInteractive();
-        this.hoverCircle = scene.add.graphics();
-        this.hoverCircle.lineStyle(2, 0x00ff00, 1); // Green outline
-        this.hoverCircle.strokeCircle(x * Entity.tileSize, y * Entity.tileSize, targetRadius * Entity.tileSize); // Circle radius 50
-        this.hoverCircle.setVisible(false); // Initially hide the circle
-
+    static loadParams(entity, params) {
+        entity.hoverCircle = entity.scene.add.graphics();
+        entity.hoverCircle.lineStyle(2, 0x00ff00, 1); // Green outline
+        entity.hoverCircle.strokeCircle(entity.x, entity.y, params.targetRadius * Entity.tileSize); // Circle radius 50
+        entity.hoverCircle.setVisible(false); // Initially hide the circle
     }
 
     update(time, dt) {
-
         this.hoverCircle.setVisible(this.hovering || this.selected)     // show targeting range if hovering or selected
-
     }
 }

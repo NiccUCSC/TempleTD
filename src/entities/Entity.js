@@ -3,96 +3,80 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     
     static tileSize = 64
 
-    constructor(scene, x, y, name, scale, zdepth, interactive) {
-        super(scene.matter.world, x, y, name);
+    // class based default value of paramaters
+    static params = {
+        name: "",
+        origin: new Phaser.Math.Vector2(0.5, 0.5),
+        scale: 1,
+        zdepth: 1,
+        interactive: false,
+        hovering: false,
+        selected: false,
+        health: 1e99,
+        maxHealth: 1e99,
+        healthRegenRate: 0,
+        displaysHealth: true,
+        healthbarOffset: new Phaser.Math.Vector2(-0.5, 0.6),
+        healthbarSize: new Phaser.Math.Vector2(1, 0.1),
+        alive: true,
+        team: 0,
+        base_dps: 0,
+        dps_multiplier: 1,
+        maxSpeed: 0,
+        maxAcc: 0,
+        frictionAlpha: 0,
+    }
+
+    // constructor(scene, x, y, name, scale, zdepth, interactive) {
+    constructor(scene, x, y, params) {
+        // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
+        params = {...Entity.params, ...params}
+        super(scene.matter.world, x, y, params.name);
+        this.scene = scene
+        this.scene.add.existing(this);
         this.x = x * Entity.tileSize
         this.y = y * Entity.tileSize
 
-        interactive = interactive ?? true // entities are interactive by default
-
-        // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
-        scene.add.existing(this);
-
-        this.scene = scene;
-        this.setOrigin(0.5, 0.5)
-        this.setDepth(zdepth)
-        this.setScale(scale)
-        this.name = name
-        this.scale = scale
-        this.zdepth = zdepth
+        // load dictionary of paramaters and set dependent values
+        Entity.loadParams(this, params)
 
         // physics
         this.pos = new Phaser.Math.Vector2(x, y)
         this.vel = new Phaser.Math.Vector2(0, 0)
         this.acc = new Phaser.Math.Vector2(0, 0)
 
-        this.maxAcc = 0
-        this.maxSpeed = 0
-        this.frictionAlpha = 0
         this.collidingWith = new Set()   // set of overlapping entities
-
-        // Health and stats
-        this.displaysHealth = true
-        this.maxHealth = 1
-        this.health = this.maxHealth
-        this.team = 0               // 0 is neutral, 1 is friendly, -1 is enemy
-        this.base_dps = 0           // damage per second when colliding with other team
-        this.dps_multiplier = 1     // scales the damage
-
-        this.healthRegenRate = 0         // percent of max health gained per second
-        this.healthbarOffset = new Phaser.Math.Vector2(-0.5, 0.6).scale(scale)
-        this.healthbarSize = new Phaser.Math.Vector2(scale, 0.1)
-        this.healthBar = this.scene.add.graphics().setDepth(100);
-        this.alive = true
-
-        // events
-        if (interactive) {
-            this.on('pointerover', this.pointerover, this)
-            this.on('pointerout', this.pointerout, this)
-            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
-        }
-
-        this.hovering = false
-        this.selected = false
 
         this.update_sprite()
     }
 
-    // used to pass an object containing many paramaters
-    loadParams(params) {
-        this.name = params.name ?? ""
-        this.scale = params.scale ?? 1
-        this.zdepth = params.zdepth ?? 1
-        this.interactive = params.interactive ?? false
-        if (this.interactive) {
-            this.hovering = params.hovering ?? false
-            this.selected = params.selected ?? false
-            this.on('pointerover', this.pointerover, this)
-            this.on('pointerout', this.pointerout, this)
-            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
-        }
-        this.health = params.maxHealth ?? 1e99
-        this.maxHealth = params.maxHealth ?? 1e99
-        this.healthRegenRate = params.healthRegenRate ?? 0
-        this.displaysHealth = params.displaysHealth ?? true
-        this.alive = params.alive ?? true
-        if (this.displaysHealth) {
-            this.healthbarOffset = params.healthbarOffset ?? new Phaser.Math.Vector2(-0.5, 0.6).scale(this.scale)
-            this.healthbarSize = params.healthbarSize ?? new Phaser.Math.Vector2(this.scale, 0.1)
-            this.healthBar = this.scene.add.graphics().setDepth(100);
-        }
-        this.team = params.team ?? 0
-        this.base_dps = params.base_dps ?? 0
-        this.dps_multiplier = params.dps_multiplier ?? 1
-        this.maxSpeed = params.maxSpeed ?? 0
-        this.maxAcc = params.maxAcc ?? 0
-        this.frictionAlpha = params.frictionAlpha ?? 0
-        this.maxAcc *= 1 + this.frictionAlpha / (this.frictionAlpha + this.maxSpeed)
+    unpackNamedParams(params) {
+        Object.keys(params).forEach(key => {this[key] = params[key]})
     }
 
-    // untested code to update (a subset) of the paramaters of an entity
-    updateParams(params) {
-        Object.keys(params).forEach(key => {if (key in this) this[key] = params[key]})
+    static loadParams(entity, params) {
+        entity.unpackNamedParams(params)
+
+        entity.setOrigin(params.origin.x, params.origin.y)
+        entity.setDepth(params.zdepth)
+        entity.setScale(params.scale)
+
+        entity.health = clamp(params.health, 0, entity.maxHealth)
+        if (entity.interactive) {
+            entity.setInteractive();
+            entity.hovering = params.hovering
+            entity.selected = params.selected
+            entity.on('pointerover', entity.pointerover, entity)
+            entity.on('pointerout', entity.pointerout, entity)
+            entity.scene.input.on('pointerdown', entity.pointerdown, entity)     // toggles when clicked, deselectes when background clicked
+        }
+        if (entity.displaysHealth) {
+            entity.healthbarOffset = params.healthbarOffset.clone().scale(params.scale)
+            entity.healthbarSize = params.healthbarSize.clone()
+            entity.healthbarSize.x *= params.scale
+            entity.healthBar = entity.scene.add.graphics().setDepth(100);
+        }
+        entity.maxAcc *= 1 + entity.frictionAlpha / (entity.frictionAlpha + entity.maxSpeed)
     }
 
     // set functions

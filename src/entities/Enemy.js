@@ -4,17 +4,13 @@ class Enemy extends Entity {
         interactive: true,
         healthRegenRate: 0.05,
         team: -1,
+        targetRadius: 15,
+        target: null,
     }
     
-    constructor(scene, x, y, params) {
-        super(scene, x, y, params.name)
-        this.loadParams(params)
-    }
-
-    loadParams(params) {
-        this.targetRadius = params.targetRadius ?? 15
-        this.target = params.target ?? null
-        super.loadParams({...Enemy.params, ...params})
+    constructor(scene, x, y, params) {        
+        params = {...Enemy.params, ...params}
+        super(scene, x, y, params)
     }
 
     update(time, dt) {

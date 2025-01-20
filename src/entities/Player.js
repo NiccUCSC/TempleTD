@@ -12,9 +12,9 @@ class Player extends Entity {
         frictionAlpha: 10,
     }
     
-    constructor(scene, x, y, childParams) {
-        super(scene, x, y, Player.params.name)
-        super.loadParams({...Player.params, ...childParams})
+    constructor(scene, x, y, params) {
+        params = {...Player.params, ...params}
+        super(scene, x, y, params)
 
         this.setCircle(0.4 * Entity.tileSize / 2)
         this.cursors = this.scene.input.keyboard.createCursorKeys();  // Arrow keys for movement

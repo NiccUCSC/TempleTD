@@ -1,29 +1,30 @@
 class Turret extends Building {
-    constructor(scene, x, y, params = {}) {
-        super(scene, x, y, params.name ?? "turrettier1", params.scale, 10, params.targetRadius ?? 6, params.logisticsRadius ?? 10)
-        this.loadParams(params)
-        this.initHealthAndStats(params.maxHealth, params.healthRegenRate, params.base_dps)
-        this.setCircle(1.2 * params.scale * Entity.tileSize / 2).setStatic(true)
-
-        this.target = null                      // entity aiming for
-        this.timeTillShoot = 0                  // setup time before shooting and time between shots
-        this.shootPos = null                    // location of the end of the barrel (bullet spawn location updated every shot)
+    static params = {
+        team: 1,
+        base_dps: 1,
+        target: null,           // entity target
+        timeTillShoot: 0,       // time remaining before next shot
+        shootPos: null,         // location of the end of the barrel
+        shootOffset: [new Phaser.Math.Vector2(0, 0)],
+        fireRate: 1,
+        muzzleVel: 10,
+        projectileType: BulletTier1,
+        barrelCount: 1,
+        barrelIndex: 0,
     }
 
-    loadParams(params) {
-        this.fireRate = params.fireRate ?? 1            // shots per second
-        this.muzzleVel = params.muzzleVel ?? 10         // speed of the bullet in tiles / second when initially shot
+    constructor(scene, x, y, params) {
+        params = {...Turret.params, ...params}
+        super(scene, x, y, params)
+        Turret.loadParams(this, params)
+    }
 
-        this.shootOffset = params.shootOffset ??
-            [new Phaser.Math.Vector2(0, -0.5)]          // array of offsets to the end of the barrel from center of sprite
-        for (let offset of this.shootOffset) offset.scale(this.scale)
-        this.projectileType = params.projectileType 
-            ?? BulletTier1                              // projectile class
+    static loadParams(entity, params) {
+        entity.shootOffset = params.shootOffset.map(vec => vec.clone().scale(params.scale))
+        entity.barrelCount = params.shootOffset.length
+        entity.barrelIndex = params.barrelIndex % params.shootOffset.length
 
-        console.log(params.shootOffset, params.shootOffset.length)
-        this.barrelCount = params.shootOffset.length
-        this.barrelIndex = 0
-        super.loadParams(params)
+        entity.setCircle(1.2 * params.scale * Entity.tileSize / 2).setStatic(true)
     }
 
     targetInterceptPos() {  // approximate location for intercept between bullet and target
@@ -51,8 +52,10 @@ class Turret extends Building {
         if (this.timeTillShoot <= 0 && this.target) {           // shoot when target present
             this.timeTillShoot += 1 / this.fireRate
             this.barrelIndex = (this.barrelIndex + 1) % this.barrelCount    // cycle to next barrel
-            console.log(`shooting from ${this.barrelIndex} of ${this.barrelCount}`)
-            new this.projectileType(this.scene, this.shootPos.x, this.shootPos.y, this.muzzleVel, this.rotation - Math.PI / 2)
+            new this.projectileType(this.scene, this.shootPos.x, this.shootPos.y, {
+                muzzleSpeed: this.muzzleVel, 
+                angle: this.rotation - Math.PI / 2
+            })
         }
     }
 }

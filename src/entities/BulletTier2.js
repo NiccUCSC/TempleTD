@@ -1,17 +1,18 @@
 class BulletTier2 extends Bullet {
-    static target_types = ["enemy"]
-
-    constructor(scene, x, y, muzzleSpeed, angle, lifetime = 3) {
-        super(scene, x, y, "bullettier2", 1.5, muzzleSpeed, angle, lifetime)
-
-        this.initHealthAndStats(.5, 0, 2, 4)
-        this.initMovementConstants(80, 10, 0)
-        this.setCircle(0.25 * this.scale * Entity.tileSize / 2)
-        this.setSensor(true);
-        this.displaysHealth = false
-
-        console.log(x, y, this.x, this.y)
-
+    static params = {
+        name: "bullettier2",
+        scale: 1.5,
+        maxHealth: 0.5,
+        base_dps: 4,
+        maxSpeed: 80,
+        maxAcc: 10,
     }
 
+    constructor(scene, x, y, params) {
+        params = {...BulletTier2.params, ...params}
+        super(scene, x, y, params)
+
+        this.setCircle(0.25 * this.scale * Entity.tileSize / 2)
+        this.setSensor(true);
+    }
 }

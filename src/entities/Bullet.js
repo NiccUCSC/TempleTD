@@ -1,26 +1,26 @@
 class Bullet extends Entity {
     static params = {
-
+        zdepth: 15,
+        displaysHealth: false,
+        team: 2,
+        lifetime: 3,
+        muzzleSpeed: 3,
+        angle: 0,
     }
 
-    constructor(scene, x, y, name, scale, muzzleSpeed, angle, lifetime, params) {
-        super(scene, x, y, name, scale, 15)
-        // super(scene, x, y, params.name, params.scale, Bullet.params.zdepth)
-        // this.loadParams(params)
-
-        this.lifetime = lifetime
-        this.vel.x = muzzleSpeed 
-        this.vel.rotate(angle)
-        this.setVelocity(this.vel.x, this.vel.y)
-        this.setPosition(this.x, this.y)
+    constructor(scene, x, y, params) {
+        params = {...Bullet.params, ...params}
+        super(scene, x, y, params)
+        Bullet.loadParams(this, params)
     }
 
-    loadParams(params) {
-        this.lifetime = params.lifetime ?? 3
-        this.vel.x = muzzleSpeed ?? 1
-        this.vel.rotate(params.angle ?? 0)
+    static loadParams(entity, params) {
+        entity.vel.x = params.muzzleSpeed
+        entity.vel.rotate(params.angle)
+        entity.setVelocity(entity.vel.x, entity.vel.y)
+        entity.setPosition(entity.x, entity.y)
+        entity.setSensor(true);
     }
-
 
     update(time, dt) {
         this.lifetime -= dt
