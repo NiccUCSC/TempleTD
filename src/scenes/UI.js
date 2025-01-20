@@ -11,7 +11,7 @@ class UI extends Phaser.Scene {
     }
 
     create() {
-        new Clock(this, 0.5, 0.01)
+        new UIClock(this, 0.5, 0.01)
     }
 
     update(time, dt) {

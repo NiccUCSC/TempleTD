@@ -21,7 +21,8 @@ class UIElement extends Phaser.GameObjects.Container {
         
         Object.keys(params).forEach(key => {this[key] = params[key]})
 
-        this.screenPos = {x: params.pos.x * UIElement.width, y: params.pos.y * UIElement.height}
+        this.x = params.pos.x * UIElement.width
+        this.y = params.pos.y * UIElement.height
     }
 
     update(time, dt) { return }
@@ -33,7 +34,8 @@ class UIElement extends Phaser.GameObjects.Container {
 
         let elements = scene.children.getChildren().filter(obj => obj instanceof UIElement)
         for (const element of elements) {
-            element.screenPos = {x: element.pos.x * UIElement.width, y: element.pos.y * UIElement.height}
+            element.x = element.pos.x * UIElement.width
+            element.y = element.pos.y * UIElement.height
             element.update(time, dt)
         }
     }
