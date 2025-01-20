@@ -5,12 +5,12 @@ class UIElement extends Phaser.GameObjects.Container {
     static height = 480
     static unit = 6.4
 
-
     static params = {
         name: "",
         zlayer: 0,
         pos: {x: 0.5, y: 0.5},          // in porportions of the screen
-        size: {width: 1, height: 1}     // in units (height / 100)
+        size: {width: 1, height: 1},    // in units (height / 100)
+        relativePos: null,              // position relative to other UIElement in units
     }
 
     constructor(scene, params) {
@@ -27,6 +27,20 @@ class UIElement extends Phaser.GameObjects.Container {
 
     update(time, dt) { return }
 
+    setRelativePos(other, dx, dy) {
+        this.relativePos = { other: other, dx: dx, dy: dy }
+    }
+
+    updatePos() {
+        if (this.relativePos) {
+            this.x = this.relativePos.other.x + this.relativePos.dx * UIElement.unit
+            this.y = this.relativePos.other.y + this.relativePos.dy * UIElement.unit
+        } else {
+            this.x = this.pos.x * UIElement.width
+            this.y = this.pos.y * UIElement.height
+        }
+    }
+
     static update_all(scene, time, dt) {
         UIElement.width = scene.cameras.main.width
         UIElement.height = scene.cameras.main.height
@@ -34,8 +48,7 @@ class UIElement extends Phaser.GameObjects.Container {
 
         let elements = scene.children.getChildren().filter(obj => obj instanceof UIElement)
         for (const element of elements) {
-            element.x = element.pos.x * UIElement.width
-            element.y = element.pos.y * UIElement.height
+            element.updatePos()
             element.update(time, dt)
         }
     }

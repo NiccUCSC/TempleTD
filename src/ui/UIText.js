@@ -1,6 +1,6 @@
 class UIText extends UIElement {
     static params = {
-        fontSize: 3,
+        fontSize: 2,
         origin: [0.5, 0.5],
         text: null,
         textString: "",
