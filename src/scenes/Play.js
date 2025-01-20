@@ -17,14 +17,17 @@ class Play extends Phaser.Scene {
         this.load.image("ground", "towerDefense_tile236.png")
         this.load.image("sand", "towerDefense_tile098.png")
         this.load.image("spawnzone", "towerDefense_tile130.png")
-        this.load.image("enemytier1", "towerDefense_tile132.png")
-        this.load.image("enemytier2", "towerDefense_tile134.png")
+
         this.load.image("player", "towerDefense_tile245.png")
         this.load.image("turrettier1", "towerDefense_tile249.png")
         this.load.image("turrettier2", "towerDefense_tile250.png")
         this.load.image("rocket", "towerDefense_tile251.png")
         this.load.image("bullettier1", "towerDefense_tile274.png")
         this.load.image("bullettier2", "towerDefense_tile272.png")
+
+        this.load.path = "./assets/images/"
+        this.load.image("enemytier1", "EnemyTier1.png")
+        this.load.image("enemytier2", "EnemyTier2.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")

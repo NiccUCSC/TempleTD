@@ -8,6 +8,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         name: "",
         origin: new Phaser.Math.Vector2(0.5, 0.5),
         scale: 1,
+        tileScale: 1,
         zdepth: 1,
         interactive: false,
         hovering: false,
@@ -59,7 +60,16 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         entity.setOrigin(params.origin.x, params.origin.y)
         entity.setDepth(params.zdepth)
-        entity.setScale(params.scale)
+        // entity.setScale(params.scale)
+
+        if (Array.isArray(params.scale)) {
+            entity.setDisplaySize(params.scale[0] * Entity.tileSize, params.scale[1] * Entity.tileSize)
+            entity.tileScale = Math.min(...params.scale)
+        } else {
+            entity.setDisplaySize(params.scale * Entity.tileSize, params.scale * Entity.tileSize)
+            entity.tileScale = params.scale
+        }
+        
 
         entity.health = clamp(params.health, 0, entity.maxHealth)
         if (entity.interactive) {

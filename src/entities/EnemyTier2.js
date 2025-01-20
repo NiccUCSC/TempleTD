@@ -12,7 +12,7 @@ class EnemyTier2 extends Enemy {
     constructor(scene, x, y, params) {
         params = {...EnemyTier2.params, ...EnemyTier2.generateParams(), ...params}
         super(scene, x, y, params) // 
-        this.setCircle(0.8 * this.scale * Entity.tileSize / 2)
+        this.setCircle(0.8 * this.tileScale * Entity.tileSize / 2)
     }
 
     static generateParams(scale = gaussianRandom(2, 0.15)) {
