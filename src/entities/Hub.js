@@ -11,7 +11,7 @@ class Hub extends Building {
         params = {...Hub.params, ...params}
         super(scene, x, y, params)
     
-        this.setRectangle(0.8 * this.scale * Entity.tileSize, 0.8 * this.scale * Entity.tileSize).setStatic(true)
+        this.setRectangle(this.tileScale * Entity.tileSize, this.tileScale * Entity.tileSize).setStatic(true)
     }
 
     update(time, dt) {

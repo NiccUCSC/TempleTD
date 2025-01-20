@@ -13,11 +13,11 @@ class EnemyTier1 extends Enemy {
         this.setCircle(0.8 * this.tileScale * Entity.tileSize / 2)
     }
 
-    static generateParams(scale = gaussianRandom(.8, 0.15)) {
+    static generateParams(scale = Math.max(gaussianRandom(.8, .1), 0.6)) {
         return {
             scale: scale,
             maxHealth: 4 * scale ** 2,
-            maxSpeed: 2 / scale
+            maxSpeed: 1.5 / scale
         }
     }
 }

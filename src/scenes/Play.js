@@ -13,7 +13,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.path = "./assets/kenny/PNG/Default size/"
-        this.load.image("hub", "towerDefense_tile180.png")
+        // this.load.image("hub", "towerDefense_tile180.png")
         this.load.image("ground", "towerDefense_tile236.png")
         this.load.image("sand", "towerDefense_tile098.png")
         this.load.image("spawnzone", "towerDefense_tile130.png")
@@ -26,6 +26,8 @@ class Play extends Phaser.Scene {
         this.load.image("bullettier2", "towerDefense_tile272.png")
 
         this.load.path = "./assets/images/"
+        this.load.image("hub", "Temple.png")
+
         this.load.image("enemytier1", "EnemyTier1.png")
         this.load.image("enemytier2", "EnemyTier2.png")
         this.load.image("enemytier3", "EnemyTier3.png")
@@ -46,7 +48,7 @@ class Play extends Phaser.Scene {
             } else {
                 this.vertTiles /= 1.02
             }
-            this.vertTiles = this.vertTiles > 5 ? this.vertTiles < 80 ? this.vertTiles : 80 : 5
+            this.vertTiles = clamp(this.vertTiles, 5, 40)
         })
 
         // Tilemap ground
@@ -105,11 +107,11 @@ class Play extends Phaser.Scene {
         // Entities
         this.player = new Player(this, 0, -3)  // Position at (100, 100)
         this.hub = new Hub(this, 0, 0)
-        this.turret1 = new TurretTier1(this, -2, -3)
-        this.turret2 = new TurretTier2(this, 2, -3)
+        this.turret1 = new TurretTier1(this, -3, -4)
+        this.turret2 = new TurretTier2(this, 3, -4)
 
         this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
-            spawnRate: 100,
+            spawnRate: 3,
             spawnRadius: 1,
             spawnType: EnemyTier1,
         })

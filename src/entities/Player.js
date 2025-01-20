@@ -1,6 +1,7 @@
 class Player extends Entity {
     static params = {
         name: "player",
+        scale: 2,
         zdepth: 5,
         interactive: true,
         maxHealth: 10,
