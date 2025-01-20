@@ -79,29 +79,12 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         entity.maxAcc *= 1 + entity.frictionAlpha / (entity.frictionAlpha + entity.maxSpeed)
     }
 
-    // set functions
-    initHealthAndStats(maxHealth, healthRegenRate, team, base_dps) {
-        this.health = maxHealth
-        this.maxHealth = maxHealth
-        this.healthRegenRate = healthRegenRate
-        this.team = team
-        this.base_dps = base_dps ?? 0
-    }
-
-    initMovementConstants(maxSpeed, maxAcc, frictionAlpha) {
-        this.maxSpeed = maxSpeed                                        // in tiles / second (determined by friction)
-        this.maxAcc = maxAcc                                            // in tiles / second ^ 2
-        this.frictionAlpha = frictionAlpha                              // friction force minimum
-        this.maxAcc *= 1 + frictionAlpha / (frictionAlpha + maxSpeed)   // fix acceleration due to friction alpha
-    }
-
     // event functions
     pointerover() { this.hovering = true }
 
     pointerout() { this.hovering = false }
 
     pointerdown() { this.selected = this.hovering && !this.selected }
-
 
     move_with_force(force, dt) {        
         let speed = this.vel.length()
