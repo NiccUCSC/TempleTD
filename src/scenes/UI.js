@@ -9,23 +9,29 @@ class UI extends Phaser.Scene {
     create() {
         // new UIClock(this, 0.5, 0.01)
         this.stone_resource = new UIResource(this, {
-            resoruceName: "stone_icon", 
+            resourceName: "stone_icon", 
             relativePos: [ 1, 0 ],              // in porportions of the screen
             unitOffset: [-1, 1],                // offset from relative position in units
             anchorPoint: [1, 0],                // in units of unitScale
         })
-        // this.mana_resource = new UIResource(this, {
-        //     resourceName: "mana_icon",
-        //     relativePos: { other: this.stone_resource, dx: 0, dy: 8 },
-        // })
-        // this.bullettier1_resource = new UIResource(this, {
-        //     resourceName: "bullettier1_icon",
-        //     relativePos: { other: this.stone_resource, dx: 0, dy: 16 },
-        // })
-        // this.bullettier2_resource = new UIResource(this, {
-        //     resourceName: "bullettier2_icon",
-        //     relativePos: { other: this.stone_resource, dx: 0, dy: 24 },
-        // })
+        this.mana_resource = new UIResource(this, {
+            resourceName: "mana_icon",
+            relativePos: [ 1, 0 ],              // in porportions of the screen
+            unitOffset: [-1, 9],                // offset from relative position in units
+            anchorPoint: [1, 0],                // in units of unitScale        
+        })
+        this.bullettier1_resource = new UIResource(this, {
+            resourceName: "bullettier1_icon", 
+            relativePos: [ 1, 0 ],              // in porportions of the screen
+            unitOffset: [-1, 17],                // offset from relative position in units
+            anchorPoint: [1, 0],                // in units of unitScale
+        })
+        this.bullettier2_resource = new UIResource(this, {
+            resourceName: "bullettier2_icon",
+            relativePos: [ 1, 0 ],              // in porportions of the screen
+            unitOffset: [-1, 25],                // offset from relative position in units
+            anchorPoint: [1, 0],                // in units of unitScale        
+        })
 
         // this.turret_shopItem = new UIShopItem(this, {
         //     resourceName: "turrettier1",
@@ -33,10 +39,12 @@ class UI extends Phaser.Scene {
         //     pos: { x: 0.01, y: 0.01 },
         // })
 
-        // this.stone_resource.setQuantity(1, 12)
-        // this.mana_resource.setQuantity(1234567, 989.4)
-        // this.bullettier1_resource.setQuantity(123456, 384328)
-        // this.bullettier2_resource.setQuantity(10000000000000000000, 111111111)
+        this.stone_resource.setQuantity(123456, 384328)
+        this.mana_resource.setQuantity(1234567, 989.4)
+        this.bullettier1_resource.setQuantity(123456, 384328)
+        this.bullettier2_resource.setQuantity(10000000000000000000, 111111111)
+
+        console.log(this.bullettier1_resource)
     }
 
     update(time, dt) {

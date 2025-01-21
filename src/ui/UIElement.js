@@ -21,7 +21,6 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     getRelativePosition() {
-        console.log(this)
         return [this.relativePos[0] * this.parentContainer.unitScale[0] + this.unitOffset[0],
                 this.relativePos[1] * this.parentContainer.unitScale[1] + this.unitOffset[1]]
     }
@@ -36,7 +35,6 @@ class UIElement extends Phaser.GameObjects.Container {
 
         if (params.interactive) {
             this.rect = this.scene.add.rectangle(0, 0, this.unitScale[0], this.unitScale[1], 0x000000).setAlpha(0.5)
-            console.log(this, ...this.anchorPoint)
             this.rect.setOrigin(...this.anchorPoint)
             this.add(this.rect)
             // this.setInteractive(rect)            
@@ -74,10 +72,14 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     update_all_children(time, dt) {
-        let elements = this.list.filter(obj => obj instanceof UIElement)
-        for (const element of elements) {
-            element.setPosition(...element.getRelativePosition())
-            element.update_all_children(time, dt)
+        for (const element of this.list) {
+            if (element instanceof UIElement) {
+                element.setPosition(...element.getRelativePosition())
+                element.update(time, dt)
+                element.update_all_children(time, dt)
+            } //else {
+            //     element.update(time, dt)
+            // }
         }  
     }
 }

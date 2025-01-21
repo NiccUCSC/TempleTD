@@ -6,7 +6,7 @@ class UIText extends UIElement {
         text: null,
         textString: "",
         textParams: {
-            fontSize: 40 + 'px',
+            fontSize: 128 + 'px',
             color: '#ffffff',
             fontStyle: 'bold',
             align: 'right'
@@ -35,22 +35,24 @@ class UIText extends UIElement {
         this.text.setDisplaySize(sx, sy)
     }
 
-    static numberToStringFormatted(number, digits) {
+    static numberToStringFormatted(number, digits, signed) {
         let postFixIndex = 0
         while (Math.abs(number) >= 1000) {
                 number /= 1000
             postFixIndex++
         }
 
+        let signChar = signed ? '+' : ''
+        if (signed && number) signChar = number > 0 ? '+' : '-'
+
         if (postFixIndex > 5) return "OVERLOAD"
         else {
-
-            return parseFloat(number.toPrecision(digits)) + ' ' + [' ', 'K', 'M', 'B', 'T', 'Q'][postFixIndex]
+            return signChar + parseFloat(number.toPrecision(digits)) + ' ' + [' ', 'K', 'M', 'B', 'T', 'Q'][postFixIndex]
         }
     }
 
-    setNumber(number, digits) {
-        this.textString = UIText.numberToStringFormatted(number, digits)
+    setNumber(number, digits, signed=false) {
+        this.textString = UIText.numberToStringFormatted(number, digits, signed)
     }
 
     setText(text) {
@@ -58,10 +60,7 @@ class UIText extends UIElement {
     }
 
     update(time, dt) {
-        this.textParams.fontSize = this.fontSize * UIElement.unit + 'px'
-    
         this.text.setText(this.textString)
-        this.set
+        this.text.setDisplaySize(...this.unitScale)
     }
-
 }

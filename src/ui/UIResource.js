@@ -1,9 +1,9 @@
 class UIResource extends UIElement {
     static params = {
         name: "resource container",
-        unitScale: [24, 8],     // in units
+        unitScale: [21, 8],     // in units
         interactive: true,
-        resourceName: "stone_icon",
+        resourceName: "",
         quantityDigits: 4,
         incomeDigits: 3,
         quantity: 0,
@@ -23,22 +23,29 @@ class UIResource extends UIElement {
 
         this.resourceIcon = this.scene.add.sprite(0, 0, this.resourceName)
         this.resourceIcon.setOrigin(0, 0)
-        this.resourceIcon.setDisplaySize(8, 8)
-        this.resourceIcon.setPosition(-24, 0)
+        this.resourceIcon.setDisplaySize(6, 6)
+        this.resourceIcon.setPosition(-20, 1)
         this.add(this.resourceIcon)
 
         this.quantityText = new UIText(this.scene, {
-            textString: "test",
+            textString: "quantity text",
             interactive: true,
             relativePos: [0, 0],        // in screen width and height porporitons
-            unitOffset: [0, 0],
-            unitScale: [16, 4],          // in units
+            unitOffset: [-1, 1],
+            unitScale: [12, 3],          // in units
             anchorPoint: [1, 0],
         })
         this.add(this.quantityText)
 
-        console.log(this.quantityText)
-
+        this.incomeText = new UIText(this.scene, {
+            textString: "income text",
+            interactive: true,
+            relativePos: [0, 0],        // in screen width and height porporitons
+            unitOffset: [-1, 4],
+            unitScale: [12, 3],          // in units
+            anchorPoint: [1, 0],
+        })
+        this.add(this.incomeText)
 
 
 
@@ -49,9 +56,16 @@ class UIResource extends UIElement {
     setQuantity(quantity, income) {
         this.quantity = quantity
         this.income = income
+        this.quantityText.setNumber(this.quantity, this.quantityDigits)
+        this.incomeText.setNumber(this.income, this.incomeDigits, true)
+
         // this.resourceInStorage.setNumber(quantity, this.quantityDigits)
         // this.resourcePerSecond.setNumber(income, this.incomeDigits)
         // this.resourcePerSecond.textString += '/s'
+    }
+
+    update(time, dt) {
+        // console.log(this.quantity, this.quantityDigits)
     }
 
 }
