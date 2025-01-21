@@ -7,39 +7,56 @@ class UIElement extends Phaser.GameObjects.Container {
 
     static params = {
         name: "",
-        zlayer: 0,
-        pos: {x: 0.5, y: 0.5},          // in porportions of the screen
-        size: {width: 1, height: 1},    // in units (height / 100)
-        relativePos: null,              // position relative to other UIElement in units
+        relativePos: [0, 0],        // in screen width and height porporitons
+        unitOffset: [0, 0],
+        unitScale: [8, 8],          // in units
+        anchorPoint: [0.5, 0.5],    // in units of unitScale
+        interactive: false,
+        hovering: false,
+        selected: false,
+    }
+
+    static getScreenPosition(relativeX, relativeY, offsetX, offsetY) {
+        return [relativeX*UIElement.width + offsetX*UIElement.unit, relativeY*UIElement.height + offsetY*UIElement.unit]
+    }
+
+    getRelativePosition() {
+        console.log(this)
+        return [this.relativePos[0] * this.parentContainer.unitScale[0] + this.unitOffset[0],
+                this.relativePos[1] * this.parentContainer.unitScale[1] + this.unitOffset[1]]
     }
 
     constructor(scene, params) {
         params = {...UIElement.params, ...params}
-        super(scene, params.pos.x * UIElement.width, params.pos.y * UIElement.height)
+        super(scene, ...UIElement.getScreenPosition(...params.relativePos, ...params.unitOffset))
         scene.add.existing(this)
         this.scene = scene
         
         Object.keys(params).forEach(key => {this[key] = params[key]})
 
-        this.x = params.pos.x * UIElement.width
-        this.y = params.pos.y * UIElement.height
-    }
+        if (params.interactive) {
+            this.rect = this.scene.add.rectangle(0, 0, this.unitScale[0], this.unitScale[1], 0x000000).setAlpha(0.5)
+            console.log(this, ...this.anchorPoint)
+            this.rect.setOrigin(...this.anchorPoint)
+            this.add(this.rect)
+            // this.setInteractive(rect)            
 
-    update(time, dt) { return }
-
-    setRelativePos(other, dx, dy) {
-        this.relativePos = { other: other, dx: dx, dy: dy }
-    }
-
-    updatePos() {
-        if (this.relativePos) {
-            this.x = this.relativePos.other.x + this.relativePos.dx * UIElement.unit
-            this.y = this.relativePos.other.y + this.relativePos.dy * UIElement.unit
-        } else {
-            this.x = this.pos.x * UIElement.width
-            this.y = this.pos.y * UIElement.height
+            this.hovering = params.hovering
+            this.selected = params.selected
+            this.on('pointerover', this.pointerover, this)
+            this.on('pointerout', this.pointerout, this)
+            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
         }
     }
+
+    // event functions
+    pointerover() { this.hovering = true }
+
+    pointerout() { this.hovering = false }
+
+    pointerdown() { this.selected = this.hovering && !this.selected }
+
+    update(time, dt) { return }
 
     static update_all(scene, time, dt) {
         UIElement.width = scene.cameras.main.width
@@ -47,9 +64,20 @@ class UIElement extends Phaser.GameObjects.Container {
         UIElement.unit = scene.cameras.main.height / 100
 
         let elements = scene.children.getChildren().filter(obj => obj instanceof UIElement)
+        // console.log(elements)
         for (const element of elements) {
-            element.updatePos()
+            element.setScale(UIElement.unit)
+            element.setPosition(...UIElement.getScreenPosition(...element.relativePos, ...element.unitOffset))
             element.update(time, dt)
+            element.update_all_children(time, dt)
         }
+    }
+
+    update_all_children(time, dt) {
+        let elements = this.list.filter(obj => obj instanceof UIElement)
+        for (const element of elements) {
+            element.setPosition(...element.getRelativePosition())
+            element.update_all_children(time, dt)
+        }  
     }
 }
