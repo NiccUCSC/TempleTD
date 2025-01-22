@@ -21,8 +21,14 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     getRelativePosition() {
-        return [this.relativePos[0] * this.parentContainer.unitScale[0] + this.unitOffset[0],
-                this.relativePos[1] * this.parentContainer.unitScale[1] + this.unitOffset[1]]
+        let parentWidth = UIElement.width
+        let parentHeight = UIElement.height
+        if (this.parentContainer) {
+            parentWidth = this.parentContainer.unitScale[0]
+            parentHeight = this.parentContainer.unitScale[1]
+        }
+        return [this.relativePos[0] * parentWidth  + this.unitOffset[0],
+                this.relativePos[1] * parentHeight + this.unitOffset[1]]
     }
 
     constructor(scene, params) {
@@ -47,6 +53,13 @@ class UIElement extends Phaser.GameObjects.Container {
         }
     }
 
+    setUnitScale(sx, sy) {
+        console.log("here")
+        this.unitScale[0] = sx
+        this.unitScale[1] = sy
+        this.setPosition(this.getRelativePosition())
+    }
+
     // event functions
     pointerover() { this.hovering = true }
 
@@ -62,7 +75,6 @@ class UIElement extends Phaser.GameObjects.Container {
         UIElement.unit = scene.cameras.main.height / 100
 
         let elements = scene.children.getChildren().filter(obj => obj instanceof UIElement)
-        // console.log(elements)
         for (const element of elements) {
             element.setScale(UIElement.unit)
             element.setPosition(...UIElement.getScreenPosition(...element.relativePos, ...element.unitOffset))
@@ -72,14 +84,10 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     update_all_children(time, dt) {
-        for (const element of this.list) {
-            if (element instanceof UIElement) {
-                element.setPosition(...element.getRelativePosition())
-                element.update(time, dt)
-                element.update_all_children(time, dt)
-            } //else {
-            //     element.update(time, dt)
-            // }
+        for (const element of this.list.filter(element => element instanceof UIElement)) {
+            element.setPosition(...element.getRelativePosition())
+            element.update(time, dt)
+            element.update_all_children(time, dt)
         }  
     }
 }

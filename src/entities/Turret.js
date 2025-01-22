@@ -11,6 +11,7 @@ class Turret extends Building {
         projectileType: BulletTier1,
         barrelCount: 1,
         barrelIndex: 0,
+        manaDrain: 5,
     }
 
     constructor(scene, x, y, params) {

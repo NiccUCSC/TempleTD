@@ -30,12 +30,13 @@ class MainMenu extends Phaser.Scene {
         // Preload UI assets
         this.load.path = "./assets/kenny/PNG/Retina/"
         this.load.image("stone_icon", "towerDefense_tile137.png")
-        this.load.image("mana_icon", "towerDefense_tile019.png")
         this.load.image("bullettier1_icon", "towerDefense_tile275.png")
         this.load.image("bullettier2_icon", "towerDefense_tile272.png")
         
         this.load.path = "./assets/images/"
         this.load.image("up_arrow", "UpArrow.png")
+        this.load.image("mana_icon", "Mana.png")
+
     }
 
     create() {

@@ -36,6 +36,7 @@ class UIText extends UIElement {
     }
 
     static numberToStringFormatted(number, digits, signed) {
+        number = Math.floor(number)
         let postFixIndex = 0
         while (Math.abs(number) >= 1000) {
                 number /= 1000

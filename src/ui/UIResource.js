@@ -1,7 +1,7 @@
 class UIResource extends UIElement {
     static params = {
         name: "resource container",
-        unitScale: [21, 8],     // in units
+        unitScale: [10.5, 4],     // in units
         interactive: true,
         resourceName: "",
         quantityDigits: 4,
@@ -14,25 +14,18 @@ class UIResource extends UIElement {
         params = {...UIResource.params, ...params}
         super(scene, params)
 
-
-
-        // this.resourcePerSecond = new UIText(this.scene, {
-        //     origin: [ 1, 0 ],
-        //     relativePos: { other: this, dx: 0, dy: 3 },
-        // })
-
         this.resourceIcon = this.scene.add.sprite(0, 0, this.resourceName)
         this.resourceIcon.setOrigin(0, 0)
-        this.resourceIcon.setDisplaySize(6, 6)
-        this.resourceIcon.setPosition(-20, 1)
+        this.resourceIcon.setDisplaySize(3, 3)
+        this.resourceIcon.setPosition(-10, 0.5)
         this.add(this.resourceIcon)
 
         this.quantityText = new UIText(this.scene, {
             textString: "quantity text",
             interactive: true,
             relativePos: [0, 0],        // in screen width and height porporitons
-            unitOffset: [-1, 1],
-            unitScale: [12, 3],          // in units
+            unitOffset: [-0.5, 0.5],
+            unitScale: [6, 1.5],          // in units
             anchorPoint: [1, 0],
         })
         this.add(this.quantityText)
@@ -41,8 +34,8 @@ class UIResource extends UIElement {
             textString: "income text",
             interactive: true,
             relativePos: [0, 0],        // in screen width and height porporitons
-            unitOffset: [-1, 4],
-            unitScale: [12, 3],          // in units
+            unitOffset: [-0.5, 2],
+            unitScale: [6, 1.5],          // in units
             anchorPoint: [1, 0],
         })
         this.add(this.incomeText)
