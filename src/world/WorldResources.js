@@ -22,12 +22,14 @@ class WorldResources {
 
     // use to simulate draingin a resource from the global supply
     static getResources(request) {
+        console.log(request)
+        console.log(Object.keys(WorldResources))
         for (const item of request) {
-            let resource = WorldResources.resources[item.type]
+            let resource = WorldResources[item.type]
             if (item.quantity > resource.quantity) return false
         }
         for (const item of request) {
-            let resource = WorldResources.resources[item.type]
+            let resource = WorldResources[item.type]
             resource.quantity -= item.quantity
         }
         return true
@@ -59,7 +61,7 @@ class WorldResources {
     ////////// GAME START //////////
     static onGameStart() {
         WorldResources.addResource("Stone", "stone_icon", {quantity: 200})
-        WorldResources.addResource("Mana", "mana_icon", {quantity: 3000})
+        WorldResources.addResource("Mana", "mana_icon", {quantity: 0})
         WorldResources.addResource("Bullet Tier 1", "bullettier1_icon", {quantity: 100})
         WorldResources.addResource("Bullet Tier 2", "bullettier2_icon", {quantity: 0})
     }

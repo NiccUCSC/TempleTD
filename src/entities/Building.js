@@ -26,8 +26,8 @@ class Building extends Entity {
         if (entity.production.length) entity.setSource()
     }
 
-    getResources(resources) {
-        return WorldResources.getResources(resources)
+    getResources(request) {
+        return WorldResources.getResources(request)
     }
 
     setSource() {
@@ -41,6 +41,8 @@ class Building extends Entity {
 
     update(time, dt) {
         this.hoverCircle.setVisible(this.hovering || this.selected)     // show targeting range if hovering or selected
+
+        this.working = this.getResources([{type: "Mana", quantity: this.manaDrain * dt}])
     }
 
     destroy() {

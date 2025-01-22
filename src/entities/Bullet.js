@@ -6,6 +6,7 @@ class Bullet extends Entity {
         lifetime: 3,
         muzzleSpeed: 3,
         angle: 0,
+        shootCost: [],  // ammo required to shoot
     }
 
     constructor(scene, x, y, params) {

@@ -11,7 +11,7 @@ class Turret extends Building {
         projectileType: BulletTier1,
         barrelCount: 1,
         barrelIndex: 0,
-        manaDrain: 5,
+        manaDrain: 30,
     }
 
     constructor(scene, x, y, params) {
@@ -37,6 +37,8 @@ class Turret extends Building {
     update(time, dt) {
         super.update(time, dt)
 
+        if (!this.working) return;      // if no mana stop working
+
         if (this.target && this.pos.distance(this.target.pos) > this.targetRadius) this.target = null   // unfollow targets out of range
 
         if (!this.target || !this.is_alive(this.target)) 
@@ -50,7 +52,11 @@ class Turret extends Building {
         }
 
         if (this.timeTillShoot > 0) this.timeTillShoot -= dt    // always prepare next shot
-        if (this.timeTillShoot <= 0 && this.target) {           // shoot when target present
+
+        if (this.timeTillShoot <= 0 && this.target) {               // shoot when target present
+            const shootCost = this.projectileType.params.shootCost  // resources required to shoot a bullet
+            if (!this.getResources(shootCost)) return               // if required resources not present skip shot
+
             this.timeTillShoot += 1 / this.fireRate
             this.barrelIndex = (this.barrelIndex + 1) % this.barrelCount    // cycle to next barrel
             new this.projectileType(this.scene, this.shootPos.x, this.shootPos.y, {

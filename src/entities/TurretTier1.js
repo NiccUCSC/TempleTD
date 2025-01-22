@@ -10,7 +10,8 @@ class TurretTier1 extends Turret {
         projectileType: BulletTier1,
         maxHealth: 10,
         healthRegenRate: 0.01,
-        base_dps: 1
+        base_dps: 1,
+        manaDrain: 10,
     }
 
     constructor(scene, x, y, params) {
