@@ -46,9 +46,9 @@ class WorldResources {
     ////////// GAME START //////////
     static onGameStart() {
         WorldResources.addResource("Stone", "stone_icon", {quantity: 200})
-        WorldResources.addResource("Mana", "mana_icon", {quantity: 0})
-        WorldResources.addResource("Bullet Tier 1", "bullettier1_icon", {quantity: 100})
-        WorldResources.addResource("Bullet Tier 2", "bullettier2_icon", {quantity: 0})
+        WorldResources.addResource("Mana", "mana_icon", {quantity: 5000})
+        WorldResources.addResource("Bullet Tier 1", "bullettier1_icon", {quantity: 5000})
+        WorldResources.addResource("Bullet Tier 2", "bullettier2_icon", {quantity: 5000})
     }
 
     static update(time, dt) {

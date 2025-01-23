@@ -83,33 +83,31 @@ class Play extends Phaser.Scene {
         // Entities
         this.player = new Player(this, 0, -3)  // Position at (100, 100)
         this.hub = new Hub(this, 0, 0)
-        this.turret1 = new TurretTier1(this, -3, -4)
-        // this.turret2 = new TurretTier2(this, 3, -4)
-
-        // this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
-        //     spawnRate: 3,
-        //     spawnRadius: 1,
-        //     spawnType: EnemyTier1,
-        // })
-
-        // this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
-        //     spawnRate: .5,
-        //     spawnRadius: 2,
-        //     spawnType: EnemyTier2,
-        // })
-
-
-        // this.t3SpawnZone = new EnemySpawnZone(this, 0, -25, {
-        //     spawnRate: .02,
-        //     spawnRadius: 3,
-        //     spawnType: EnemyTier3,
-        // })
 
         this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
-            spawnRate: 0.5,
+            spawnRate: 3,
             spawnRadius: 1,
             spawnType: EnemyTier1,
         })
+
+        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
+            spawnRate: .5,
+            spawnRadius: 2,
+            spawnType: EnemyTier2,
+        })
+
+
+        this.t3SpawnZone = new EnemySpawnZone(this, 0, -25, {
+            spawnRate: .02,
+            spawnRadius: 3,
+            spawnType: EnemyTier3,
+        })
+
+        // this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
+        //     spawnRate: 0.5,
+        //     spawnRadius: 1,
+        //     spawnType: EnemyTier1,
+        // })
 
     }
 
