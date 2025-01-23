@@ -1,8 +1,6 @@
 class Resource {
     static resourceTypes = 0
 
-    static UIScene = null
-
     static params = {
         name: "unnamed resource",
         spriteIcon: "",

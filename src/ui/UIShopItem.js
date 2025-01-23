@@ -3,40 +3,50 @@ class UIShopItem extends UIElement {
         name: "shop item",
         resourceName: "",
         shopName: "SHOP ITEM NAME",
+        cost: [],
+        unitScale: [20, 6],     // in units
+        interactive: true,
         resourceIcon: null,
         itemText: null,
         costText: null,
         pos: { x: 0.5, y: 0.5 },
-        cost: { stone: 5, mana: 2 },
+        cost: { stone: 15 },
     }
 
     constructor(scene, params) {
         params = {...UIShopItem.params, ...params}
         super(scene, params)
 
-        // Shop Item Icon
-        this.itemIcon = this.scene.add.sprite(0, 0, this.resourceName)
-        this.itemIcon.setOrigin(0, 0)
+        this.resourceIcon = this.scene.add.sprite(0, 0, this.resourceName)
+        this.resourceIcon.setOrigin(0, 0)
+        this.resourceIcon.setDisplaySize(5, 5)
+        this.resourceIcon.setPosition(0.5, 0.5)
+        this.add(this.resourceIcon)
 
-        // Shop Item Name
         this.itemText = new UIText(this.scene, {
-            origin: [ 0, 0 ],
-            relativePos: { other: this, dx: 8, dy: 0.5 },
-            textString: this.shopName,
+            textString: "item text",
+            interactive: true,
+            relativePos: [0, 0],        // in screen width and height porporitons
+            unitOffset: [6, 0.5],
+            unitScale: [13.5, 3],          // in units
+            anchorPoint: [0, 0],
         })
+        this.add(this.itemText)
 
-        // Cost text
         this.costText = new UIText(this.scene, {
-            origin: [ 0, 0 ],
-            relativePos: { other: this, dx: 8, dy: 3.5 },
-            textString: "Cost: ",
+            textString: "cost text",
+            interactive: true,
+            relativePos: [0, 0],        // in screen width and height porporitons
+            unitOffset: [6, 3.5],
+            unitScale: [13.5, 2],          // in units
+            anchorPoint: [0, 0],
         })
+        this.add(this.costText)
+
+        this.itemText.setText(this.shopName)
+        this.costText.setShopCostText(this.cost)
     }
 
     update(time, dt) {
-        this.itemText.setText(this.shopName)
-        this.itemIcon.x = this.x
-        this.itemIcon.y = this.y
-        this.itemIcon.setDisplaySize(6 * UIElement.unit, 6 * UIElement.unit)
     }
 }

@@ -52,6 +52,13 @@ class UIText extends UIElement {
         }
     }
 
+    setShopCostText(cost) {
+        this.textString = " Cost: "
+        Object.keys(cost).forEach(key => {
+            this.textString += key + " x " + cost[key] + " "
+        })
+    }
+
     setNumber(number, digits, signed=false) {
         this.textString = UIText.numberToStringFormatted(number, digits, signed)
     }

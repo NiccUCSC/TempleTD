@@ -2,14 +2,14 @@ class Play extends Phaser.Scene {
     constructor() {
         super('playScene')
         console.log('Play: constructor')
-        WorldResources.PlayInit(this)
+        World.PlayInit(this)
     }
 
     init() {
         console.log('Play: init')
         this.vertTiles = 25
         this.zoom = tiles => 2 * game.config.height / 64 / tiles
-        WorldResources.onGameStart()
+        World.onGameStart()
     }
 
     create() {

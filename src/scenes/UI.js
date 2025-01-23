@@ -3,35 +3,18 @@ class UI extends Phaser.Scene {
     constructor() {
         super('uiScene')  // This scene is active by default
         console.log('UI: constructor')
-        WorldResources.UIInit(this)
+        World.UIInit(this)
     }
 
     create() {
-        // new UIClock(this, 0.5, 0.01)
-        // this.stone_resource = new UIResource(this, {
-        //     resourceName: "stone_icon", 
-        //     relativePos: [ 1, 0 ],              // in porportions of the screen
-        //     unitOffset: [-1, 1],                // offset from relative position in units
-        //     anchorPoint: [1, 0],                // in units of unitScale
-        // })
-        // this.mana_resource = new UIResource(this, {
-        //     resourceName: "mana_icon",
-        //     relativePos: [ 1, 0 ],              // in porportions of the screen
-        //     unitOffset: [-1, 5],                // offset from relative position in units
-        //     anchorPoint: [1, 0],                // in units of unitScale        
-        // })
-        // this.bullettier1_resource = new UIResource(this, {
-        //     resourceName: "bullettier1_icon", 
-        //     relativePos: [ 1, 0 ],              // in porportions of the screen
-        //     unitOffset: [-1, 9],                // offset from relative position in units
-        //     anchorPoint: [1, 0],                // in units of unitScale
-        // })
-        // this.bullettier2_resource = new UIResource(this, {
-        //     resourceName: "bullettier2_icon",
-        //     relativePos: [ 1, 0 ],              // in porportions of the screen
-        //     unitOffset: [-1, 13],                // offset from relative position in units
-        //     anchorPoint: [1, 0],                // in units of unitScale        
-        // })
+        new UIClock(this, {
+            interactive: true,
+            relativePos: [0.5, 0],        // in screen width and height porporitons
+            unitOffset: [0, 1],
+            unitScale: [12, 2.5],          // in units
+            anchorPoint: [0.5, 0],
+        })
+
 
         // this.turret_shopItem = new UIShopItem(this, {
         //     resourceName: "turrettier1",
@@ -46,6 +29,7 @@ class UI extends Phaser.Scene {
 
         // this.stone_resource.setUnitScale(10, 5)
         // console.log(this.bullettier1_resource)
+
     }
 
     update(time, dt) {

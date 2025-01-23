@@ -2,28 +2,13 @@ class WorldResources {
     static resources = []
     static sources = new Set()  // list of entitiy sources
 
-    static PlayScene = null
-    static UIScene = null
-
-    static PlayInit(PlayScene) {
-        console.log("play")
-        WorldResources.PlayScene = PlayScene
-    }
-
-    static UIInit(UIScene) {
-        console.log("ui")
-        WorldResources.UIScene = UIScene
-    }
-
     static addResource(name, spriteIcon, params) {
-        WorldResources[name] = new Resource(WorldResources.UIScene, name, spriteIcon, params)
+        WorldResources[name] = new Resource(World.UIScene, name, spriteIcon, params)
         WorldResources.resources.push(WorldResources[name])
     }
 
     // use to simulate draingin a resource from the global supply
     static getResources(request) {
-        console.log(request)
-        console.log(Object.keys(WorldResources))
         for (const item of request) {
             let resource = WorldResources[item.type]
             if (item.quantity > resource.quantity) return false

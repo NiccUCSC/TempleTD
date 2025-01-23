@@ -5,7 +5,7 @@ class TurretTier1 extends Turret {
         logisticRadius: 10,
         scale: 1,
         fireRate: 1,
-        muzzleVel: 10,
+        muzzleVel: 6,
         shootOffset: [new Phaser.Math.Vector2(0, -0.5)],
         projectileType: BulletTier1,
         maxHealth: 10,

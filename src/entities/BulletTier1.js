@@ -3,7 +3,7 @@ class BulletTier1 extends Bullet {
         name: "bullettier1",
         scale: 1,
         maxHealth: 0.2,
-        base_dps: 0.7,
+        base_dps: 1.1,
         maxSpeed: 40,
         maxAcc: 10,
         shootCost: [{type: "Bullet Tier 1", quantity: 1}],  // ammo required to shoot
