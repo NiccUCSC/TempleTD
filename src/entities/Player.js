@@ -31,8 +31,10 @@ class Player extends Entity {
     update(time, dt) {
 
         let force = new Phaser.Math.Vector2(0, 0)
-        force.x = this.cursors.right.isDown - this.cursors.left.isDown
-        force.y = this.cursors.down.isDown - this.cursors.up.isDown
+        // force.x = this.cursors.right.isDown - this.cursors.left.isDown
+        // force.y = this.cursors.down.isDown - this.cursors.up.isDown
+        force.x = World.rightKey.isDown - World.leftKey.isDown
+        force.y = World.downKey.isDown - World.upKey.isDown
         force.setLength(this.maxAcc)
 
         super.move_with_force(force, dt)

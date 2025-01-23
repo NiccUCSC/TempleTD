@@ -20,6 +20,13 @@ class World {
 
     static onGameStart() {
         World.interactKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
+        
+        World.upKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        World.downKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
+        World.leftKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        World.rightKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+
+
         console.log(World.interactKey)
         World.interactKey.on("down", World.onInteractKey)
         WorldResources.onGameStart()

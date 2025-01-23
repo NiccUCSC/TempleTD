@@ -19,12 +19,12 @@ class Play extends Phaser.Scene {
         this.cam.centerOn(0, 0)
 
         this.input.on('wheel', (pointer, dx, dy, dz, event) => {
-            if (pointer.deltaY < 0) {
-                this.vertTiles *= 1.02
+            if (pointer.deltaY > 0) {
+                this.vertTiles *= 1.05
             } else {
-                this.vertTiles /= 1.02
+                this.vertTiles /= 1.05
             }
-            this.vertTiles = clamp(this.vertTiles, 5, 40)
+            this.vertTiles = clamp(this.vertTiles, 5, 80)
         })
 
         // Tilemap ground
@@ -90,14 +90,14 @@ class Play extends Phaser.Scene {
             spawnType: EnemyTier1,
         })
 
-        this.t2SpawnZone = new EnemySpawnZone(this, 5, -20, {
+        this.t2SpawnZone = new EnemySpawnZone(this, 5, -30, {
             spawnRate: .5,
             spawnRadius: 2,
             spawnType: EnemyTier2,
         })
 
 
-        this.t3SpawnZone = new EnemySpawnZone(this, 0, -25, {
+        this.t3SpawnZone = new EnemySpawnZone(this, 0, -50, {
             spawnRate: .02,
             spawnRadius: 3,
             spawnType: EnemyTier3,
