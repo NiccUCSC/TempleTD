@@ -29,17 +29,28 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     }
 
     static previewSprite = null
+    static previewClass = null
     static showPreview(scene, entityClass) {  // used to show where entity will go if placed
         this.clearPreview()
         let mouseX = game.input.mousePointer.worldX
         let mouseY = game.input.mousePointer.worldY
         Entity.previewSprite = new Phaser.GameObjects.Sprite(scene, mouseX, mouseY, entityClass.params.name)
         scene.add.existing(Entity.previewSprite)
+        Entity.previewClass = entityClass
     }
 
     static clearPreview() {
         if (Entity.previewSprite) Entity.previewSprite.destroy()
         Entity.previewSprite = null
+        Entity.previewClass = null
+    }
+
+    static placePreview(scene) {
+        let mouseX = game.input.mousePointer.worldX
+        let mouseY = game.input.mousePointer.worldY
+        const newEntity = new Entity.previewClass(scene, mouseX / Entity.tileSize, mouseY / Entity.tileSize)
+        console.log(newEntity)
+        scene.add.existing(newEntity)
     }
 
     // constructor(scene, x, y, name, scale, zdepth, interactive) {

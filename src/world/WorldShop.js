@@ -28,6 +28,20 @@ class WorldShop {
         })
     }
 
+    static onInteractKey() {
+        if (WorldShop.selected) {
+            console.log("Placing")
+
+            console.log("Check if entity can be placed (not colliding with existing entitites)")
+
+            console.log("Drain resources")
+    
+            console.log("Place entity")
+            Entity.placePreview(World.PlayScene)
+        }
+    }
+
+
     static update(time, dt) {
         // console.log("Shop update")
         if (!WorldShop.selected) Entity.clearPreview()
