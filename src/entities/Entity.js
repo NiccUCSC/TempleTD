@@ -28,6 +28,11 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         frictionAlpha: 0,
     }
 
+    static showPreview() {  // used to show where entity will go if placed
+        let mouseX = game.input.mousePointer.worldX;
+        let mouseY = game.input.mousePointer.worldY;
+    }
+
     // constructor(scene, x, y, name, scale, zdepth, interactive) {
     constructor(scene, x, y, params) {
         // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)

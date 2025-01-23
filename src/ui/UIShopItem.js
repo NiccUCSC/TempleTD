@@ -4,6 +4,7 @@ class UIShopItem extends UIElement {
         resourceName: "",
         shopName: "SHOP ITEM NAME",
         cost: {},
+        parent: null,       // ShopItem instance 
         unitScale: [20, 6],     // in units
         interactive: true,
         resourceIcon: null,
@@ -47,11 +48,11 @@ class UIShopItem extends UIElement {
     }
 
     onSelect() {
-        WorldShop.setSelected(this)
+        WorldShop.setSelected(this.parent)
     }
 
     onDeselect() {
-        WorldShop.setDeselected(this)
+        WorldShop.setDeselected(this.parent)
     }
 
     update(time, dt) {

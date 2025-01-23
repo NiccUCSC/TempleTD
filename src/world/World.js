@@ -16,4 +16,9 @@ class World {
         WorldResources.onGameStart()
         WorldShop.onGameStart()
     }
+
+    static update(time, dt) {
+        WorldResources.update(time, dt)
+        WorldShop.update(time, dt)
+    }
 }

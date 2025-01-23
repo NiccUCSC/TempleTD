@@ -118,7 +118,7 @@ class Play extends Phaser.Scene {
         dt /= 1000
 
         Entity.update_all(this, time, dt)
-        WorldResources.update(time, dt) 
+        World.update(time, dt) 
 
         this.cam.setZoom(this.zoom(this.vertTiles))
         this.cam.startFollow(this.player)
