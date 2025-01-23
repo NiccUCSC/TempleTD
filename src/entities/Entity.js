@@ -35,6 +35,11 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         let mouseX = game.input.mousePointer.worldX
         let mouseY = game.input.mousePointer.worldY
         Entity.previewSprite = new Phaser.GameObjects.Sprite(scene, mouseX, mouseY, entityClass.params.name)
+
+        let scale = entityClass.params.scale
+        scale = Array.isArray(scale) ? scale : [scale, scale]
+
+        Entity.previewSprite.setDisplaySize(scale[0] * Entity.tileSize, scale[1] * Entity.tileSize)
         scene.add.existing(Entity.previewSprite)
         Entity.previewClass = entityClass
     }

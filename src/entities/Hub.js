@@ -5,7 +5,7 @@ class Hub extends Building {
         maxHealth: 100,
         team: 1,
         base_dps: 1,
-        production: { Stone: 1, Mana: 200 },
+        production: { Stone: 1, Mana: 50 },
     }
 
     constructor(scene, x, y, params) {
