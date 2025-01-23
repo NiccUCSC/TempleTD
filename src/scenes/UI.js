@@ -16,25 +16,20 @@ class UI extends Phaser.Scene {
         })
 
 
-        // this.turret_shopItem = new UIShopItem(this, {
-        //     resourceName: "turrettier1",
-        //     shopName: "Turret Tier 1",
-        //     pos: { x: 0.01, y: 0.01 },
+        // this.test = new UIRect(this, {
+        //     relativePos: [0, 0],        // in screen width and height porporitons
+        //     unitScale: [8, 8],          // size in units
+        //     unitOffset: [0, 0],         // displacment from relative position in units
+        //     anchorPoint: [0.5, 0.5],    // origin of object in percent})
         // })
-
-        // this.stone_resource.setQuantity(200, 1)
-        // this.mana_resource.setQuantity(0, 0)
-        // this.bullettier1_resource.setQuantity(0, 0)
-        // this.bullettier2_resource.setQuantity(0, 0)
-
-        // this.stone_resource.setUnitScale(10, 5)
-        // console.log(this.bullettier1_resource)
 
     }
 
     update(time, dt) {
         time /= 1000
         dt /= 1000
+
+        // this.test.updateScaleAndPos()
 
         UIElement.update_all(this, time, dt)
     }

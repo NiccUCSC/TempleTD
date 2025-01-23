@@ -25,7 +25,6 @@ class UIShopItem extends UIElement {
 
         this.itemText = new UIText(this.scene, {
             textString: "item text",
-            interactive: true,
             relativePos: [0, 0],        // in screen width and height porporitons
             unitOffset: [6, 0.5],
             unitScale: [13.5, 3],          // in units
@@ -35,7 +34,6 @@ class UIShopItem extends UIElement {
 
         this.costText = new UIText(this.scene, {
             textString: "cost text",
-            interactive: true,
             relativePos: [0, 0],        // in screen width and height porporitons
             unitOffset: [6, 3.5],
             unitScale: [13.5, 2],          // in units
@@ -47,6 +45,13 @@ class UIShopItem extends UIElement {
         this.costText.setShopCostText(this.cost)
     }
 
+    
+
     update(time, dt) {
+        if (this.selected) {
+            console.log(this)
+            this.rect.setFillStyle(0x2ecc71)
+        }
+        else this.rect.setFillStyle(0x3498db)
     }
 }

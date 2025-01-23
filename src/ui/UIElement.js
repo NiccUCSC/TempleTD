@@ -43,13 +43,22 @@ class UIElement extends Phaser.GameObjects.Container {
             this.rect = this.scene.add.rectangle(0, 0, this.unitScale[0], this.unitScale[1], 0x000000).setAlpha(0.5)
             this.rect.setOrigin(...this.anchorPoint)
             this.add(this.rect)
-            // this.setInteractive(rect)            
+
+            this.rect.setInteractive()
+            // this.rect.on('pointerdown', () => {
+            //     console.log('Box clicked!');
+            //     this.rect.setFillStyle(0x2ecc71);  // Change color to green on click
+            // })            
+            this.rect.on('pointerdown', () => this.pointerdown(this))
+            this.rect.on('pointerout', () => this.pointerout(this))
+            this.rect.on('pointerover', () => this.pointerover(this))
+
 
             this.hovering = params.hovering
             this.selected = params.selected
-            this.on('pointerover', this.pointerover, this)
-            this.on('pointerout', this.pointerout, this)
-            this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
+            // this.on('pointerover', this.pointerover, this)
+            // this.on('pointerout', this.pointerout, this)
+            // this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
         }
     }
 
@@ -61,11 +70,22 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     // event functions
-    pointerover() { this.hovering = true }
+    pointerover(element) { 
+        console.log("HOVERING", element.name)
+        element.hovering = true 
+    }
 
-    pointerout() { this.hovering = false }
+    pointerout(element) { 
+        console.log("UNHOVERING", element.name) 
+        element.hovering = false 
+    }
 
-    pointerdown() { this.selected = this.hovering && !this.selected }
+    pointerdown(element) {
+        console.log(element)
+        console.log("CLICKED", element.name)
+        
+        element.selected = element.hovering && !element.selected 
+    }
 
     update(time, dt) { return }
 

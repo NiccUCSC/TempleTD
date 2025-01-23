@@ -1,8 +1,13 @@
 class WorldShop {
     static shopItems = []
+    static selected = null
 
     static addShopItem(name, spriteIcon, params) {
         WorldShop[name] = new ShopItem(World.UIScene, name, spriteIcon, params)
+    }
+
+    static setSelected(uiShopItem) {
+
     }
 
     static onGameStart() {
