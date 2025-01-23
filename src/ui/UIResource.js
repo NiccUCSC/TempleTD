@@ -39,11 +39,6 @@ class UIResource extends UIElement {
             anchorPoint: [1, 0],
         })
         this.add(this.incomeText)
-
-
-
-        // this.resoureIncome = this.scene.add.sprite(0, 0, "up_arrow")
-        // this.resoureIncome.setOrigin(1, 0.25)
     }
 
     setQuantity(quantity, income) {

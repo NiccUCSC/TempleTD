@@ -21,9 +21,7 @@ class Resource {
             unitOffset: [-1, 1 + 4 * Resource.resourceTypes],   // offset from relative position in units
             anchorPoint: [1, 0],                                // in units of unitScale
         })
-
-        console.log(`New resource created: ${this.name}`)
-
+        
         Resource.resourceTypes++
     }
 

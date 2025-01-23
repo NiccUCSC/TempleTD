@@ -24,9 +24,6 @@ class ShopItem {
             anchorPoint: [0, 0],                                // in units of unitScale
         })
 
-
-        console.log(`New Shop Item Created: ${this.name}`)
-
         ShopItem.shopItemTypes++
     }
 

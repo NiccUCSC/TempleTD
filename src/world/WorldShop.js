@@ -7,7 +7,14 @@ class WorldShop {
     }
 
     static setSelected(uiShopItem) {
+        console.log("Setting", uiShopItem.name)
+        WorldShop.selected = uiShopItem
+    }
 
+    static setDeselected(uiShopItem) {
+        console.log("Unsetting", uiShopItem.name)
+
+        if (WorldShop.selected == uiShopItem) WorldShop.selected == null
     }
 
     static onGameStart() {

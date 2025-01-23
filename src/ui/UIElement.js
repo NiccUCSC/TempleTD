@@ -45,20 +45,12 @@ class UIElement extends Phaser.GameObjects.Container {
             this.add(this.rect)
 
             this.rect.setInteractive()
-            // this.rect.on('pointerdown', () => {
-            //     console.log('Box clicked!');
-            //     this.rect.setFillStyle(0x2ecc71);  // Change color to green on click
-            // })            
-            this.rect.on('pointerdown', () => this.pointerdown(this))
             this.rect.on('pointerout', () => this.pointerout(this))
             this.rect.on('pointerover', () => this.pointerover(this))
-
+            this.scene.input.on('pointerdown', () => this.pointerdown(this), this.rect)     // toggles when clicked, deselectes when background clicked
 
             this.hovering = params.hovering
             this.selected = params.selected
-            // this.on('pointerover', this.pointerover, this)
-            // this.on('pointerout', this.pointerout, this)
-            // this.scene.input.on('pointerdown', this.pointerdown, this)     // toggles when clicked, deselectes when background clicked
         }
     }
 
@@ -71,21 +63,23 @@ class UIElement extends Phaser.GameObjects.Container {
 
     // event functions
     pointerover(element) { 
-        console.log("HOVERING", element.name)
         element.hovering = true 
     }
 
     pointerout(element) { 
-        console.log("UNHOVERING", element.name) 
         element.hovering = false 
     }
 
     pointerdown(element) {
-        console.log(element)
-        console.log("CLICKED", element.name)
-        
-        element.selected = element.hovering && !element.selected 
+        const wasSelected = element.selected
+        element.selected = element.hovering && !element.selected
+        if (element.selected) element.onSelect()
+        else if (wasSelected) element.onDeselect()
     }
+
+    onSelect() { return }
+
+    onDeselect() { return }
 
     update(time, dt) { return }
 

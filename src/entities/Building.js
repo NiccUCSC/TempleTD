@@ -6,7 +6,7 @@ class Building extends Entity {
         healthRegenRate: 0.01,
         targetRadius: 6,
         logisticRadius: 10,
-        production: [],     // array of { typs, rate } resource production objects
+        production: null,     // { typs: rate }
         manaDrain: 0,       // cost to operate per second
         working: true,      // stops working without mana
     }
@@ -23,7 +23,7 @@ class Building extends Entity {
         entity.hoverCircle.strokeCircle(entity.x, entity.y, params.targetRadius * Entity.tileSize); // Circle radius 50
         entity.hoverCircle.setVisible(false); // Initially hide the circle
 
-        if (entity.production.length) entity.setSource()
+        if (entity.production) entity.setSource()
     }
 
     getResources(request) {
@@ -31,12 +31,9 @@ class Building extends Entity {
     }
 
     setSource() {
-        this.production.forEach(item => {
-            console.log(item)
-            console.log("here")
-            WorldResources.addSource(this, item.type, item.rate)
-        });
-        
+        Object.keys(this.production).forEach(key => {
+            WorldResources.addSource(this, key, this.production[key])
+        })
     }
 
     update(time, dt) {
@@ -46,7 +43,7 @@ class Building extends Entity {
     }
 
     destroy() {
-        if (this.production.length) WorldResources.removeSource(this)
+        if (this.production) WorldResources.removeSource(this)
         super.destroy()
     }
 }

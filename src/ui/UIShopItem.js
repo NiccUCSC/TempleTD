@@ -3,7 +3,7 @@ class UIShopItem extends UIElement {
         name: "shop item",
         resourceName: "",
         shopName: "SHOP ITEM NAME",
-        cost: [],
+        cost: {},
         unitScale: [20, 6],     // in units
         interactive: true,
         resourceIcon: null,
@@ -16,6 +16,7 @@ class UIShopItem extends UIElement {
     constructor(scene, params) {
         params = {...UIShopItem.params, ...params}
         super(scene, params)
+        this.name += ": " + this.shopName
 
         this.resourceIcon = this.scene.add.sprite(0, 0, this.resourceName)
         this.resourceIcon.setOrigin(0, 0)
@@ -45,13 +46,16 @@ class UIShopItem extends UIElement {
         this.costText.setShopCostText(this.cost)
     }
 
-    
+    onSelect() {
+        WorldShop.setSelected(this)
+    }
+
+    onDeselect() {
+        WorldShop.setDeselected(this)
+    }
 
     update(time, dt) {
-        if (this.selected) {
-            console.log(this)
-            this.rect.setFillStyle(0x2ecc71)
-        }
+        if (this.selected) this.rect.setFillStyle(0x2ecc71)
         else this.rect.setFillStyle(0x3498db)
     }
 }

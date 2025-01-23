@@ -17,12 +17,7 @@ class MainMenu extends Phaser.Scene {
         this.load.image("bullettier1", "towerDefense_tile275.png")
         this.load.image("bullettier2", "towerDefense_tile272.png")
 
-        this.load.path = "./assets/images/"
-        this.load.image("hub", "Temple.png")
 
-        this.load.image("enemytier1", "EnemyTier1.png")
-        this.load.image("enemytier2", "EnemyTier2.png")
-        this.load.image("enemytier3", "EnemyTier3.png")
 
         this.load.path = "./assets/kenny/Tilesheet/"
         this.load.image("tileset", "towerDefense_tilesheet.png")
@@ -34,9 +29,11 @@ class MainMenu extends Phaser.Scene {
         this.load.image("bullettier2_icon", "towerDefense_tile272.png")
         
         this.load.path = "./assets/images/"
-        this.load.image("up_arrow", "UpArrow.png")
         this.load.image("mana_icon", "Mana.png")
-
+        this.load.image("hub", "TempleTier1.png")
+        this.load.image("enemytier1", "EnemyTier1.png")
+        this.load.image("enemytier2", "EnemyTier2.png")
+        this.load.image("enemytier3", "EnemyTier3.png")
     }
 
     create() {
