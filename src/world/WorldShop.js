@@ -9,12 +9,13 @@ class WorldShop {
     static setSelected(shopItem) {
         console.log("Setting", shopItem.name)
         WorldShop.selected = shopItem
+        Entity.showPreview(World.PlayScene, shopItem.entityClass)
+
     }
 
     static setDeselected(shopItem) {
         console.log("Unsetting", shopItem.name)
-
-        if (WorldShop.selected == shopItem) WorldShop.selected == null
+        if (WorldShop.selected == shopItem) WorldShop.selected = null
     }
 
     static onGameStart() {
@@ -29,10 +30,6 @@ class WorldShop {
 
     static update(time, dt) {
         // console.log("Shop update")
-        const selected = WorldShop.selected // type: ShopItem
-        if (selected) {
-            const entityClass = selected.entityClass
-            entityClass.showPreview()
-        }
+        if (!WorldShop.selected) Entity.clearPreview()
     }
 }

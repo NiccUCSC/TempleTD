@@ -28,9 +28,18 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         frictionAlpha: 0,
     }
 
-    static showPreview() {  // used to show where entity will go if placed
-        let mouseX = game.input.mousePointer.worldX;
-        let mouseY = game.input.mousePointer.worldY;
+    static previewSprite = null
+    static showPreview(scene, entityClass) {  // used to show where entity will go if placed
+        this.clearPreview()
+        let mouseX = game.input.mousePointer.worldX
+        let mouseY = game.input.mousePointer.worldY
+        Entity.previewSprite = new Phaser.GameObjects.Sprite(scene, mouseX, mouseY, entityClass.params.name)
+        scene.add.existing(Entity.previewSprite)
+    }
+
+    static clearPreview() {
+        if (Entity.previewSprite) Entity.previewSprite.destroy()
+        Entity.previewSprite = null
     }
 
     // constructor(scene, x, y, name, scale, zdepth, interactive) {
@@ -174,6 +183,12 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         for (const entity of entites) {                 // update health
             entity.update_health(dt)                    // entities die here
+        }
+
+        if (Entity.previewSprite) {
+            let mouseX = game.input.mousePointer.worldX
+            let mouseY = game.input.mousePointer.worldY
+            Entity.previewSprite.setPosition(mouseX, mouseY).setOrigin(0.5, 0.5)
         }
     }
 
