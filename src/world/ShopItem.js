@@ -5,7 +5,7 @@ class ShopItem {
     static parentHTMLElement = null;
 
     static {
-        const getParentElement = () => {this.parentHTMLElement = document.querySelector(".shop-box")}
+        const getParentElement = () => {this.parentHTMLElement = document.querySelector(".shop-shelf")}
         if (document.readyState === "complete") {
             getParentElement()
         } else {
@@ -19,6 +19,7 @@ class ShopItem {
         entityClass: null,
         uiElement: null,
         tier: 0,
+        uiHTMLElements: {},
     }
 
     constructor(scene, name, spriteIcon, entityClass, params) {
@@ -26,11 +27,7 @@ class ShopItem {
         Object.keys(params).forEach(key => {this[key] = params[key]})
 
 
-        this.uiHTMLElements = {
-            shop: null,
-        };
-
-        console.log(`New shop created: ${this.name}`)
+        this.uiHTMLElements = {};
 
         const shopHTMLElement = document.createElement("div")
         shopHTMLElement.classList.add("shop")
