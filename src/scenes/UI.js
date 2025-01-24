@@ -6,6 +6,9 @@ class UI extends Phaser.Scene {
     }
 
     create() {
+
+        this.clock = new MUIClock()
+
         // new UIClock(this, {
         //     interactive: true,
         //     relativePos: [0.5, 0],        // in screen width and height porporitons
@@ -28,7 +31,7 @@ class UI extends Phaser.Scene {
         dt /= 1000
 
         // this.test.updateScaleAndPos()
-
+        this.clock.update(time, dt)
         UIElement.update_all(this, time, dt)
     }
 }

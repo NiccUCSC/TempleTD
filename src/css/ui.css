@@ -15,15 +15,33 @@ canvas {
     margin: 0 !important;
 }
 
-.resource-box {
+.clock-box {
     width: 100vw;
     display: flex;
     justify-content: center;
     position: absolute;
-    padding-top: 15px;
+    h1 {
+        padding: 0;
+        margin: 0;
+        margin-top: 10px;
+        color: white;
+        text-shadow: 2px 2px 4px black;
+        font-family: monospace;
+        font-size: 3em;
+    }
+}
+
+.resource-box {
+    height: 100vh;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    padding-right: 15px;
 
     .resource:not(:last-of-type) {
-        margin-right: 10px;
+        margin-bottom: 10px;
     }
     .resource {
         height: 64px;
@@ -73,11 +91,22 @@ canvas {
     position: absolute;
     top: 0;
 
-    .shop:not(:last-of-type) {
+    /* .shop:not(:last-of-type) {
         margin-bottom: 10px;
-    }
+    } */
     * {
         user-select: none;
+    }
+    .shop-shelf {
+        background-color: var(--gray);
+        padding: 10px 10px 10px 0;
+        border-radius: 0 20px 20px 0;
+        max-height: 70vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    .shop-shelf::-webkit-scrollbar {
+        display: none;
     }
     .shop.selected {
         background-color: var(--selected-gray);
@@ -85,7 +114,7 @@ canvas {
     .shop {
         height: 96px;
         display: flex;
-        background-color: var(--gray);
+        background-color: transparent; /* var(--gray); */
         border-radius: 0 10px 10px 0;
         cursor: pointer;
 

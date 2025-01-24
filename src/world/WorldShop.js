@@ -7,13 +7,16 @@ class WorldShop {
     }
 
     static setSelected(shopItem) {
+        if (shopItem == WorldShop.selected) shopItem = null;
         if (WorldShop.selected != null) WorldShop.selected.deselect()
         WorldShop.selected = shopItem
-        if (WorldShop.selected != null) WorldShop.selected.select()
-        Entity.showPreview(World.PlayScene, shopItem.entityClass)
+        if (WorldShop.selected != null) {
+            WorldShop.selected.select()
+            Entity.showPreview(World.PlayScene, shopItem.entityClass)
+        }
     }
 
-    static setDeselected(shopItem) {
+    static setDeselected(shopItem) { // TODO is this function nececary?
         if (WorldShop.selected == shopItem) WorldShop.selected = null
     }
 
