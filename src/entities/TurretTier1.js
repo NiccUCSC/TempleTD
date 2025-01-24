@@ -12,6 +12,8 @@ class TurretTier1 extends Turret {
         healthRegenRate: 0.01,
         base_dps: 1,
         manaDrain: 10,
+        collisionShape: { type: "Circle", size: 1.2 },
+        buildCost: { Stone: 20 },
     }
 
     constructor(scene, x, y, params) {

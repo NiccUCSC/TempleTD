@@ -22,8 +22,10 @@ class ShopItem {
     }
 
     constructor(scene, name, spriteIcon, entityClass, params) {
-        params = {...ShopItem.params, ...params, ...{name: name, spriteIcon: spriteIcon, entityClass: entityClass}}
+        params = {...ShopItem.params, ...params, ...{name: name, spriteIcon: spriteIcon, entityClass: entityClass, cost: entityClass.params.buildCost}}
         Object.keys(params).forEach(key => {this[key] = params[key]})
+
+        if (!this.cost) console.warn(`Entity Class ${entityClass} missing buildCost paramater`)
 
 
         this.uiHTMLElements = {

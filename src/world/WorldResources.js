@@ -9,14 +9,23 @@ class WorldResources {
 
     // use to simulate draingin a resource from the global supply
     static getResources(request) {
-        for (const item of request) {
-            let resource = WorldResources[item.type]
-            if (item.quantity > resource.quantity) return false
+
+
+        for (const key of Object.keys(request)) {    // key is item type, value is quantity
+            if (request[key] > WorldResources[key].quantity) return false
         }
-        for (const item of request) {
-            let resource = WorldResources[item.type]
-            resource.quantity -= item.quantity
+
+        for (const key of Object.keys(request)) {    // key is item type, value is quantity
+            WorldResources[key].quantity -= request[key]
         }
+        // for (const item of request) {
+        //     let resource = WorldResources[item.type]
+        //     if (item.quantity > resource.quantity) return false
+        // }
+        // for (const item of request) {
+        //     let resource = WorldResources[item.type]
+        //     resource.quantity -= item.quantity
+        // }
         return true
     }
 

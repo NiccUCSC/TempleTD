@@ -26,20 +26,27 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         maxSpeed: 0,
         maxAcc: 0,
         frictionAlpha: 0,
+        collisionShape: null,             // collisionShape = { type: "Circle", size: [1] }
     }
 
     static previewSprite = null
     static previewClass = null
+    static previewValidPlacment = false
     static showPreview(scene, entityClass) {  // used to show where entity will go if placed
         this.clearPreview()
         let mouseX = game.input.mousePointer.worldX
         let mouseY = game.input.mousePointer.worldY
-        Entity.previewSprite = new Phaser.GameObjects.Sprite(scene, mouseX, mouseY, entityClass.params.name)
-
+        Entity.previewSprite = new Phaser.Physics.Matter.Sprite(scene.matter.world, mouseX, mouseY, entityClass.params.name)
         let scale = entityClass.params.scale
         scale = Array.isArray(scale) ? scale : [scale, scale]
-
         Entity.previewSprite.setDisplaySize(scale[0] * Entity.tileSize, scale[1] * Entity.tileSize)
+        Entity.setShape(Entity.previewSprite, entityClass.params.collisionShape)
+        Entity.previewSprite.setAlpha(0.4)
+        Entity.previewSprite.collidingWith = new Set()
+        Entity.previewSprite.onCollide = other => Entity.previewSprite.collidingWith.add(other)
+        Entity.previewSprite.onSeperate = other => Entity.previewSprite.collidingWith.delete(other)
+        Entity.previewSprite.setSensor(true)
+
         scene.add.existing(Entity.previewSprite)
         Entity.previewClass = entityClass
     }
@@ -50,11 +57,14 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         Entity.previewClass = null
     }
 
+    static checkPreviewPlacmentValid() {
+        return Entity.previewSprite.collidingWith.size == 0
+    }
+
     static placePreview(scene) {
         let mouseX = game.input.mousePointer.worldX
         let mouseY = game.input.mousePointer.worldY
         const newEntity = new Entity.previewClass(scene, mouseX / Entity.tileSize, mouseY / Entity.tileSize)
-        console.log(newEntity)
         scene.add.existing(newEntity)
     }
 
@@ -62,7 +72,8 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y, params) {
         // console.log(`Creating ${name} at (${x}, ${y}) in scene {${scene}}`)
         params = {...Entity.params, ...params}
-        super(scene.matter.world, x, y, params.name);
+
+        super(scene.matter.world, x, y, params.name)
         this.scene = scene
         this.scene.add.existing(this);
         this.x = x * Entity.tileSize
@@ -90,7 +101,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
 
         entity.setOrigin(params.origin.x, params.origin.y)
         entity.setDepth(params.zdepth)
-        // entity.setScale(params.scale)
 
         if (Array.isArray(params.scale)) {
             entity.setDisplaySize(params.scale[0] * Entity.tileSize, params.scale[1] * Entity.tileSize)
@@ -99,7 +109,6 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             entity.setDisplaySize(params.scale * Entity.tileSize, params.scale * Entity.tileSize)
             entity.tileScale = params.scale
         }
-        
 
         entity.health = clamp(params.health, 0, entity.maxHealth)
         if (entity.interactive) {
@@ -117,7 +126,22 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             entity.healthBar = entity.scene.add.graphics().setDepth(100);
         }
         entity.maxAcc *= 1 + entity.frictionAlpha / (entity.frictionAlpha + entity.maxSpeed)
+
+        Entity.setShape(entity, entity.collisionShape)
     }
+
+    static setShape(matterSprite, shape) {
+        if (shape) {
+            switch(shape.type) {
+            case "Circle":
+                matterSprite.setCircle(shape.size * Entity.tileSize / 2)
+                break
+            case "Rect":
+                break
+            }
+        }
+    }
+
 
     // event functions
     pointerover() { this.hovering = true }
@@ -206,6 +230,8 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             let mouseY = game.input.mousePointer.worldY
             Entity.previewSprite.setPosition(mouseX, mouseY).setOrigin(0.5, 0.5)
         }
+
+        // if (Entity.previewSprite) console.log(Entity.previewSprite.collidingWith)
     }
 
     is_alive(entity) {

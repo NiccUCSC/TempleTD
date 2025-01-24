@@ -82,23 +82,23 @@ class Play extends Phaser.Scene {
         this.hub = new Hub(this, 0, 0)
 
         this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
-            spawnRate: 3,
+            spawnRate: 0.5,
             spawnRadius: 1,
             spawnType: EnemyTier1,
         })
 
-        this.t2SpawnZone = new EnemySpawnZone(this, 5, -30, {
-            spawnRate: .5,
-            spawnRadius: 2,
-            spawnType: EnemyTier2,
-        })
+        // this.t2SpawnZone = new EnemySpawnZone(this, 5, -30, {
+        //     spawnRate: .05,
+        //     spawnRadius: 2,
+        //     spawnType: EnemyTier2,
+        // })
 
 
-        this.t3SpawnZone = new EnemySpawnZone(this, 0, -50, {
-            spawnRate: .02,
-            spawnRadius: 3,
-            spawnType: EnemyTier3,
-        })
+        // this.t3SpawnZone = new EnemySpawnZone(this, 0, -50, {
+        //     spawnRate: .02,
+        //     spawnRadius: 3,
+        //     spawnType: EnemyTier3,
+        // })
 
         // this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
         //     spawnRate: 0.5,

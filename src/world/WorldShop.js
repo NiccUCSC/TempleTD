@@ -7,41 +7,33 @@ class WorldShop {
     }
 
     static setSelected(shopItem) {
-        console.log("Setting", shopItem.name)
         if (WorldShop.selected != null) WorldShop.selected.deselect()
         WorldShop.selected = shopItem
         if (WorldShop.selected != null) WorldShop.selected.select()
         Entity.showPreview(World.PlayScene, shopItem.entityClass)
-
     }
 
     static setDeselected(shopItem) {
-        console.log("Unsetting", shopItem.name)
         if (WorldShop.selected == shopItem) WorldShop.selected = null
     }
 
     static onGameStart() {
-        this.addShopItem("Turret Tier 1", "./assets/kenny/PNG/Retina/towerDefense_tile249.png", TurretTier1, { // turrettier1
-            cost: { Stone: 20 }
-        })
-        this.addShopItem("Turret Tier 2", "./assets/kenny/PNG/Retina/towerDefense_tile250.png", TurretTier2, { // turrettier2
-            cost: { Stone: 400 } 
-        })
+        this.addShopItem("Turret Tier 1", "./assets/kenny/PNG/Retina/towerDefense_tile249.png", TurretTier1)
+        this.addShopItem("Turret Tier 2", "./assets/kenny/PNG/Retina/towerDefense_tile250.png", TurretTier2)
     }
 
     static onInteractKey() {
         if (WorldShop.selected) {
-            console.log("Placing")
+            // Check valid placment
+            if (!Entity.checkPreviewPlacmentValid()) return
 
-            console.log("Check if entity can be placed (not colliding with existing entitites)")
-
-            console.log("Drain resources")
+            // Drain resources
+            if (!WorldResources.getResources(Entity.previewClass.params.buildCost)) return
     
-            console.log("Place entity")
+            // Place entity
             Entity.placePreview(World.PlayScene)
         }
     }
-
 
     static update(time, dt) {
         // console.log("Shop update")

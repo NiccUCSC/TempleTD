@@ -12,6 +12,7 @@ class Turret extends Building {
         barrelCount: 1,
         barrelIndex: 0,
         manaDrain: 1,
+        collisionShape: { type: "Circle", size: 1 }
     }
 
     constructor(scene, x, y, params) {
@@ -25,7 +26,8 @@ class Turret extends Building {
         entity.barrelCount = params.shootOffset.length
         entity.barrelIndex = params.barrelIndex % params.shootOffset.length
 
-        entity.setCircle(1.2 * params.scale * Entity.tileSize / 2).setStatic(true)
+        // entity.setCircle(1.2 * params.scale * Entity.tileSize / 2).setStatic(true)
+        entity.setStatic(true)
     }
 
     targetInterceptPos() {  // approximate location for intercept between bullet and target

@@ -9,6 +9,8 @@ class Building extends Entity {
         production: null,     // { typs: rate }
         manaDrain: 0,       // cost to operate per second
         working: true,      // stops working without mana
+        // collisionShape: { type: "Rect", size: [1, 1] }
+        buildCost: {}
     }
 
     constructor(scene, x, y, params) {
@@ -39,7 +41,7 @@ class Building extends Entity {
     update(time, dt) {
         this.hoverCircle.setVisible(this.hovering || this.selected)     // show targeting range if hovering or selected
 
-        this.working = this.getResources([{type: "Mana", quantity: this.manaDrain * dt}])
+        this.working = this.getResources({Mana: this.manaDrain * dt})
     }
 
     destroy() {

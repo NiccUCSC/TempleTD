@@ -25,7 +25,7 @@ class EnemySpawnZone extends Building {
         entity.hoverCircle.strokeCircle(entity.x, entity.y, params.spawnRadius * Entity.tileSize); // Circle radius 50
 
         entity.setCircle(params.spawnRadius * Entity.tileSize)
-        entity.setSensor(true);
+        entity.setSensor(true)
     }
 
     update(time, dt) {

@@ -20,7 +20,7 @@ class Bullet extends Entity {
         entity.vel.rotate(params.angle)
         entity.setVelocity(entity.vel.x, entity.vel.y)
         entity.setPosition(entity.x, entity.y)
-        entity.setSensor(true);
+        entity.setSensor(true)
     }
 
     update(time, dt) {

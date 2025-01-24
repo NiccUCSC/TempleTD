@@ -6,7 +6,7 @@ class BulletTier1 extends Bullet {
         base_dps: 1.1,
         maxSpeed: 40,
         maxAcc: 10,
-        shootCost: [{type: "Bullet Tier 1", quantity: 1}],  // ammo required to shoot
+        shootCost: {"Bullet Tier 1": 1},  // ammo required to shoot
     }
 
     constructor(scene, x, y, params) {
