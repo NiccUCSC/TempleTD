@@ -8,16 +8,12 @@ class TerrainGeneration {
     }
 
     static generateOre(layer) {
-        console.time('oreGen');
-
         const oreSparcity = 30;
         for (let i = 0; i < layer.tilemap.width / oreSparcity - 1; i++) {
             for (let j = 0; j < layer.tilemap.height / oreSparcity - 1; j++) {
                 this.generateOrePatch(layer, i*oreSparcity+this.randomInt(0, oreSparcity), j*oreSparcity+this.randomInt(0, oreSparcity));
             }
         }
-
-        console.timeEnd('oreGen');
     }
 
     static randomInt(min, max) {

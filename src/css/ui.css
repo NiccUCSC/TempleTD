@@ -1,0 +1,122 @@
+:root {
+    --gray: rgba(0, 0, 0, 0.3);
+    --selected-gray: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+canvas {
+    margin: 0 !important;
+}
+
+.resource-box {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    padding-top: 15px;
+
+    .resource:not(:last-of-type) {
+        margin-right: 10px;
+    }
+    .resource {
+        height: 64px;
+        width: 135px;
+        /* width: fit-content; */
+        display: flex;
+        background-color: var(--gray);
+        border-radius: 10px;
+        .image {
+            aspect-ratio: 1;
+
+            img {
+                height: 100%;
+                display: block;
+            }
+        }
+        .text {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            /* padding-right: 15px; */
+            
+            div {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            div:first-child {
+                font-weight: bolder;
+                color: white;
+                margin-top: 4px;
+            }
+            div:last-child {
+                font-weight: bolder;
+                color: gray;
+                margin-top: 4px;
+            }
+        }
+    }
+}
+
+.shop-box {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+
+    .shop:not(:last-of-type) {
+        margin-bottom: 10px;
+    }
+    * {
+        user-select: none;
+    }
+    .shop.selected {
+        background-color: var(--selected-gray);
+    }
+    .shop {
+        height: 96px;
+        display: flex;
+        background-color: var(--gray);
+        border-radius: 0 10px 10px 0;
+        cursor: pointer;
+
+        .image {
+            aspect-ratio: 1;
+
+            img {
+                height: 100%;
+                display: block;
+            }
+        }
+        .text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding-right: 15px;
+            
+            div {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            div:first-child {
+                font-weight: bolder;
+                color: white;
+                margin-top: 4px;
+            }
+            div:last-child {
+                font-weight: bolder;
+                color: gray;
+                margin-top: 4px;
+            }
+        }
+    }
+}

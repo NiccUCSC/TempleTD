@@ -55,7 +55,6 @@ class UIElement extends Phaser.GameObjects.Container {
     }
 
     setUnitScale(sx, sy) {
-        console.log("here")
         this.unitScale[0] = sx
         this.unitScale[1] = sy
         this.setPosition(this.getRelativePosition())

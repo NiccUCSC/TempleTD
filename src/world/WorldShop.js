@@ -8,7 +8,9 @@ class WorldShop {
 
     static setSelected(shopItem) {
         console.log("Setting", shopItem.name)
+        if (WorldShop.selected != null) WorldShop.selected.deselect()
         WorldShop.selected = shopItem
+        if (WorldShop.selected != null) WorldShop.selected.select()
         Entity.showPreview(World.PlayScene, shopItem.entityClass)
 
     }
@@ -19,12 +21,11 @@ class WorldShop {
     }
 
     static onGameStart() {
-        console.log("Init game shop")
-        this.addShopItem("Turret Tier 1", "turrettier1", TurretTier1, {
+        this.addShopItem("Turret Tier 1", "./assets/kenny/PNG/Retina/towerDefense_tile249.png", TurretTier1, { // turrettier1
             cost: { Stone: 20 }
         })
-        this.addShopItem("Turret Tier 2", "turrettier2", TurretTier2, {
-            cost: { Stone: 400 }
+        this.addShopItem("Turret Tier 2", "./assets/kenny/PNG/Retina/towerDefense_tile250.png", TurretTier2, { // turrettier2
+            cost: { Stone: 400 } 
         })
     }
 
