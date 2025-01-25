@@ -5,24 +5,11 @@ class Play extends Phaser.Scene {
     }
 
     init() {
-        this.vertTiles = 25
-        this.zoom = tiles => 2 * game.config.height / 64 / tiles
         World.onGameStart()
     }
 
     create() {
-        // Camera
-        this.cam = this.cameras.main
-        this.cam.centerOn(0, 0)
-
-        this.input.on('wheel', (pointer, dx, dy, dz, event) => {
-            if (pointer.deltaY > 0) {
-                this.vertTiles *= 1.05
-            } else {
-                this.vertTiles /= 1.05
-            }
-            this.vertTiles = clamp(this.vertTiles, 5, 80)
-        })
+        World.PlayCreate(this)
 
         // Tilemap ground
         this.map = this.make.tilemap({
@@ -56,9 +43,6 @@ class Play extends Phaser.Scene {
         this.movingGroup = this.matter.world.nextGroup(true)
 
         this.matter.world.disableGravity()
-        // this.matter.world.engine.timing.timeScale = 0.5  // No updates will occur
-
-        // this.matter.world.defaultCollisionFilter.friction = 0
 
 
         this.matter.world.on('collisionstart', (event) => {
@@ -115,7 +99,6 @@ class Play extends Phaser.Scene {
         Entity.update_all(this, time, dt)
         World.update(time, dt) 
 
-        this.cam.setZoom(this.zoom(this.vertTiles))
-        this.cam.startFollow(this.player)
+
     }
 }

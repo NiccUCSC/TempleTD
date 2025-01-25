@@ -8,6 +8,10 @@ class World {
         World.PlayScene = PlayScene
     }
 
+    static PlayCreate(PlayScene) {
+        WorldCamera.init(PlayScene)
+    }
+
     static UIInit(UIScene) {
         World.UIScene = UIScene
     }
@@ -40,5 +44,6 @@ class World {
     static update(time, dt) {
         WorldResources.update(time, dt)
         WorldShop.update(time, dt)
+        WorldCamera.update(time, dt)
     }
 }
