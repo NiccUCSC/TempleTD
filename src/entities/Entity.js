@@ -34,9 +34,12 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     static previewValidPlacment = false
     static showPreview(scene, entityClass) {  // used to show where entity will go if placed
         this.clearPreview()
+
+        console.log(entityClass)
         let mouseX = game.input.mousePointer.worldX
         let mouseY = game.input.mousePointer.worldY
         Entity.previewSprite = new Phaser.Physics.Matter.Sprite(scene.matter.world, mouseX, mouseY, entityClass.params.name)
+        console.log(Entity.previewSprite)
         let scale = entityClass.params.scale
         scale = Array.isArray(scale) ? scale : [scale, scale]
         Entity.previewSprite.setDisplaySize(scale[0] * Entity.tileSize, scale[1] * Entity.tileSize)

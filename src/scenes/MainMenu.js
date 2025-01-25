@@ -34,8 +34,8 @@ class MainMenu extends Phaser.Scene {
         this.load.image("enemytier2", "EnemyTier2.png")
         this.load.image("enemytier3", "EnemyTier3.png")
 
-        this.load.image("manawell", "EnemyTier3.png")
-        this.load.image("stonepit", "EnemyTier3.png")
+        this.load.image("manawell", "Elixir_Collector16.webp")
+        this.load.image("stonepit", "Gold_Mine16.webp")
         
     }
 

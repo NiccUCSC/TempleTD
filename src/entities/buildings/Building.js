@@ -10,7 +10,8 @@ class Building extends Entity {
         manaDrain: 0,       // cost to operate per second
         working: true,      // stops working without mana
         // collisionShape: { type: "Rect", size: [1, 1] }
-        buildCost: {}
+        buildCost: {},
+        isStatic: true,
     }
 
     constructor(scene, x, y, params) {
@@ -26,6 +27,8 @@ class Building extends Entity {
         entity.hoverCircle.setVisible(false); // Initially hide the circle
 
         if (entity.production) entity.setSource()
+
+        entity.setStatic(entity.isStatic)
     }
 
     getResources(request) {

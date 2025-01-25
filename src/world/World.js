@@ -18,6 +18,7 @@ class World {
 
     static onGameStart() {
         World.interactKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
+        World.debugKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z)
         
         World.upKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         World.downKey = World.PlayScene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
@@ -27,6 +28,11 @@ class World {
 
         console.log(World.interactKey)
         World.interactKey.on("down", World.onInteractKey)
+        // World.debugKey.on("down", () => {
+        //     game.config.physics.matter.debug = !game.config.physics.matter.debug
+
+        //     console.log(`Debug = ${game.config.physics.matter.debug}`)
+        // })
         WorldResources.onGameStart()
         WorldShop.onGameStart()
     }
