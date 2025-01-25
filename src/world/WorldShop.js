@@ -23,6 +23,8 @@ class WorldShop {
     static onGameStart() {
         this.addShopItem("Turret Tier 1", "./assets/kenny/PNG/Retina/towerDefense_tile249.png", TurretTier1)
         this.addShopItem("Turret Tier 2", "./assets/kenny/PNG/Retina/towerDefense_tile250.png", TurretTier2)
+        this.addShopItem("Mana Well", "./assets/images/Elixir_Collector16.webp", ManaWell)
+        this.addShopItem("Stone Pit", "./assets/images/Gold_Mine16.webp", StonePit)
     }
 
     static onInteractKey() {

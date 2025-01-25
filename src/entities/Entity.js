@@ -123,7 +123,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             entity.healthbarOffset = params.healthbarOffset.clone().scale(params.scale)
             entity.healthbarSize = params.healthbarSize.clone()
             entity.healthbarSize.x *= params.scale
-            entity.healthBar = entity.scene.add.graphics().setDepth(100);
+            entity.healthBar = entity.scene.add.graphics().setDepth(100)
         }
         entity.maxAcc *= 1 + entity.frictionAlpha / (entity.frictionAlpha + entity.maxSpeed)
 
