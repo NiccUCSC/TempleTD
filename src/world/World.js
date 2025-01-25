@@ -9,6 +9,7 @@ class World {
     }
 
     static PlayCreate(PlayScene) {
+        WorldTerrain.GenerateTerrain(PlayScene)
         WorldCamera.init(PlayScene)
     }
 

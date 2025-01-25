@@ -11,39 +11,7 @@ class Play extends Phaser.Scene {
     create() {
         World.PlayCreate(this)
 
-        // Tilemap ground
-        this.map = this.make.tilemap({
-            width: 256,  // Map width in tiles
-            height: 256, // Map height in tiles
-            tileWidth: 64,  // Tile width in pixels
-            tileHeight: 64, // Tile height in pixels
-        })
-
-        this.mapPixelWidth = this.map.width * this.map.tileWidth
-        this.mapPixelHeight = this.map.height * this.map.tileHeight
-
-        const tiles = this.map.addTilesetImage('tileset')
-
-        const groundLayer = this.map.createBlankLayer(0, tiles, 
-                        -this.mapPixelWidth/2, -this.mapPixelHeight/2)
-        groundLayer.fill(236, 0, 0, this.map.width, this.map.height)
-        // groundLayer.fill(137, 0, 0, this.map.width, this.map.height)
-
-        // Ore generation
-        const oreLayer = this.map.createBlankLayer(1, tiles, 
-                            -this.mapPixelWidth/2, -this.mapPixelHeight/2,
-                            )
-        TerrainGeneration.generateOre(oreLayer)
-
-        
-
-        // physics
-        this.bulletsGroup = this.matter.world.nextGroup(false)
-        this.buildingsGroup = this.matter.world.nextGroup(false)
-        this.movingGroup = this.matter.world.nextGroup(true)
-
         this.matter.world.disableGravity()
-
 
         this.matter.world.on('collisionstart', (event) => {
             event.pairs.forEach(pair => {

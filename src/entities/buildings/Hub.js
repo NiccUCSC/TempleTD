@@ -6,6 +6,7 @@ class Hub extends Building {
         team: 1,
         base_dps: 1,
         production: { Stone: 1, Mana: 50 },
+        logisticRadius: 30,
     }
 
     constructor(scene, x, y, params) {
