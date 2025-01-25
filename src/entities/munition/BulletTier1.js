@@ -7,13 +7,14 @@ class BulletTier1 extends Bullet {
         maxSpeed: 40,
         maxAcc: 10,
         shootCost: {"Bullet Tier 1": 1},  // ammo required to shoot
+        collisionShape: { type: "Circle", size: 0.25 },
     }
 
     constructor(scene, x, y, params) {
         params = {...BulletTier1.params, ...params}
         super(scene, x, y, params)
 
-        this.setCircle(0.25 * this.scale * Entity.tileSize / 2)
+        // this.setCircle(0.25 * this.scale * Entity.tileSize / 2)
         this.setSensor(true);
     }
 }

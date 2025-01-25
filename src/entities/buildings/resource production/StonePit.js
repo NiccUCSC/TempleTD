@@ -9,7 +9,7 @@ class StonePit extends Building {
         manaDrain: 10,
         production: { Stone: 2 },
         buildCost: { Stone: 80, Mana: 1000 },
-        collisionShape: { type: "Circle", size: 2 },
+        collisionShape: { type: "Rect", size: [2, 2] },
     }
 
     constructor(scene, x, y, params) {

@@ -140,11 +140,11 @@ class Entity extends Phaser.Physics.Matter.Sprite {
                 matterSprite.setCircle(shape.size * Entity.tileSize / 2)
                 break
             case "Rect":
+                matterSprite.setRectangle(shape.size[0] * Entity.tileSize, shape.size[1] * Entity.tileSize)
                 break
             }
         }
     }
-
 
     // event functions
     pointerover() { this.hovering = true }
