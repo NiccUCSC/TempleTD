@@ -57,7 +57,7 @@ class Resource {
 
 
         const imgHTMLElement = this.uiHTMLElements.resource.querySelector("img")
-        imgHTMLElement.src = spriteIcon;
+        imgHTMLElement.src = WorldTextures[spriteIcon];
 
         const textHTMLElement = this.uiHTMLElements.resource.querySelector(".text")
         this.uiHTMLElements.quantity = textHTMLElement.querySelector("div:first-of-type")

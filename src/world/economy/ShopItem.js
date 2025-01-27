@@ -51,7 +51,7 @@ class ShopItem {
 
 
         const imgHTMLElement = this.uiHTMLElements.shop.querySelector("img")
-        imgHTMLElement.src = spriteIcon;
+        imgHTMLElement.src = WorldTextures[spriteIcon];
 
         // const textHTMLElement = this.uiHTMLElements.shop.querySelector(".text")
         // this.uiHTMLElements.quantity = textHTMLElement.querySelector("div:first-of-type")
