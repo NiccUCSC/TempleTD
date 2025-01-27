@@ -9,6 +9,7 @@ class EnemySpawnZone extends Building {
         spawnRadius: 1,
         spawnType: EnemyTier1,
         timeTillSpawn: 0,
+        spawnCount: 5,
     }
 
     // Add enemy spawning with variance (some enemies have more health and move slower)
@@ -29,9 +30,10 @@ class EnemySpawnZone extends Building {
     }
 
     update(time, dt) {
-        this.timeTillSpawn -= dt
+        if (this.spawnCount > 0) this.timeTillSpawn -= dt
         if (this.timeTillSpawn < 0) {
             this.timeTillSpawn += 1 / this.spawnRate
+            this.spawnCount--
 
             const angle = Math.random() * 2 * Math.PI;
             // const r = this.spawnRadius * Math.sqrt(Math.random());

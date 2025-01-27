@@ -24,6 +24,9 @@ class WorldTerrain {
 
         TerrainGeneration.generateOre(this.oreLayer)
         TerrainGeneration.generateTerrainBarrier(this.oreLayer)
+
+        // Generate enemy bases
+        EnemyBaseGeneration.generateRings()
     }
 
     

@@ -1,3 +1,0 @@
-class EnemySpawnRings {
-    static rings = []
-}
