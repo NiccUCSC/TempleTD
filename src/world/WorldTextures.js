@@ -35,6 +35,8 @@ class WorldTextures {
         this.loadTexture("enemytier1", "EnemyTier1.png")
         this.loadTexture("enemytier2", "EnemyTier2.png")
         this.loadTexture("enemytier3", "EnemyTier3.png")
+        this.loadTexture("enemytier4", "EnemyTier4.png")
+        this.loadTexture("enemytier5", "EnemyTier5.png")
 
         this.loadTexture("manawell", "Elixir_Collector16.webp")
         this.loadTexture("stonepit", "Gold_Mine16.webp")

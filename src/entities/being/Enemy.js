@@ -16,7 +16,7 @@ class Enemy extends Being {
 
     getWanderTarget() {
         if (!this.wanderTarget || 
-            this.wanderTarget.distance(new Phaser.Math.Vector2(this.x, this.y)) < 0.25) {
+            this.wanderTarget.distance(new Phaser.Math.Vector2(this.pos.x, this.pos.y)) < 0.1) {
             let r = Math.random() * this.targetRadius
             let theta = Math.random() * 2 * Math.PI
             let dx = r * Math.cos(theta)
@@ -33,7 +33,7 @@ class Enemy extends Being {
         if (!this.target || !this.is_alive(this.target)) this.target = this.find_closest_target(this.targetRadius, 1)
 
         let targetPos = this.target ? this.target.pos.clone() : this.getWanderTarget()
-        let moveForce = this.target ? this.maxAcc : 0.8 * this.maxAcc
+        let moveForce = this.target ? this.maxAcc : 0.7 * this.maxAcc
         super.move_with_force(targetPos.subtract(this.pos).setLength(moveForce), dt)
         
         super.update_sprite(0.25)

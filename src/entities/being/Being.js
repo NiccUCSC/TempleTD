@@ -24,7 +24,7 @@ class Being extends Entity {
     }
 
     update(time, dt) {
-        const showRanges = this.hovering || this.selected || World.altKey.isDown
+        const showRanges = this.hovering || this.selected
         if (this.rangeCircle) {
             this.rangeCircle.setPosition(this.x, this.y)
             // if (this.name == "player") console.log(this.x, this.y)

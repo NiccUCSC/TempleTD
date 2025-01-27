@@ -9,7 +9,7 @@ class Player extends Being {
         team: 1,
         targetRadius: 15,
         base_dps: 5,
-        maxSpeed: 8,
+        maxSpeed: 80,
         maxAcc: 50,
         frictionAlpha: 10,
     }

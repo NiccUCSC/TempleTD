@@ -15,11 +15,12 @@ class EnemySpawnRing {
         console.log(this)
 
         const baseFactor = clamp(gaussianRandom(1, 0.2), 0.5, 2)
-        const numOfBases = Math.ceil(this.radii * 2 * Math.PI * baseFactor / this.averageDist)
+        const numOfBases = Math.ceil(this.radii * 2 * Math.PI / this.averageDist)
 
         for (let i = 0; i < numOfBases; i++) {
-            const r = clamp(gaussianRandom(this.radii, 20), this.radii - 10, this.radii + 40)
-            const theta = Math.random() * 2 * Math.PI
+            const r = clamp(gaussianRandom(this.radii, 10), this.radii - 10, this.radii + 10)
+            // const theta = Math.random() * 2 * Math.PI
+            const theta = (i + Math.random()) * Math.PI * 2 / numOfBases
             const x = r * Math.cos(theta)
             const y = r * Math.sin(theta)
 

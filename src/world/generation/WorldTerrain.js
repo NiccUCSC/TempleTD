@@ -2,8 +2,8 @@ class WorldTerrain {
     static GenerateTerrain(scene) {
         // Tilemap ground
         this.map = scene.make.tilemap({
-            width: 512,  // Map width in tiles
-            height: 512, // Map height in tiles
+            width: 500,  // Map width in tiles
+            height: 500, // Map height in tiles
             tileWidth: 64,  // Tile width in pixels
             tileHeight: 64, // Tile height in pixels
         })

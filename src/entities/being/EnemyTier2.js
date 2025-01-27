@@ -2,7 +2,7 @@ class EnemyTier2 extends Enemy {
     static params = {
         name: "enemytier2",
         base_dps: 4,
-        maxAcc: 40,
+        maxAcc: 8,
         frictionAlpha: 2,
         targetRadius: 25,
     }
