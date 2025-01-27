@@ -52,11 +52,10 @@ class WorldResources {
 
     ////////// GAME START //////////
     static onGameStart() {
-        const path = "./assets/kenny/PNG/Retina/"
-        WorldResources.addResource("Stone", path + "towerDefense_tile137.png", {quantity: 200})
-        WorldResources.addResource("Mana", "./assets/images/Mana.png", {quantity: 5000})
-        WorldResources.addResource("Bullet Tier 1", path + "towerDefense_tile275.png", {quantity: 5000})
-        WorldResources.addResource("Bullet Tier 2", path + "towerDefense_tile272.png", {quantity: 5000})
+        WorldResources.addResource("Stone", "stone_icon", {quantity: 200})
+        WorldResources.addResource("Mana", "mana_icon", {quantity: 5000})
+        WorldResources.addResource("Bullet Tier 1", "bullettier1_icon", {quantity: 5000})
+        WorldResources.addResource("Bullet Tier 2", "bullettier2_icon", {quantity: 5000})
     }
 
     static update(time, dt) {
