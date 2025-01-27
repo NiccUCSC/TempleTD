@@ -2,8 +2,8 @@ class WorldTerrain {
     static GenerateTerrain(scene) {
         // Tilemap ground
         this.map = scene.make.tilemap({
-            width: 256,  // Map width in tiles
-            height: 256, // Map height in tiles
+            width: 512,  // Map width in tiles
+            height: 512, // Map height in tiles
             tileWidth: 64,  // Tile width in pixels
             tileHeight: 64, // Tile height in pixels
         })
@@ -19,10 +19,11 @@ class WorldTerrain {
         // groundLayer.fill(137, 0, 0, this.map.width, this.map.height)
 
         // Ore generation
-        this.oreLayer = this.map.createBlankLayer(1, tiles, 
-                            -this.mapPixelWidth/2, -this.mapPixelHeight/2,
-                            )
+        this.oreLayer = this.map.createBlankLayer(
+            1, tiles, -this.mapPixelWidth/2, -this.mapPixelHeight/2)
+
         TerrainGeneration.generateOre(this.oreLayer)
+        TerrainGeneration.generateTerrainBarrier(this.oreLayer)
     }
 
     

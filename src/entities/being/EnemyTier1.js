@@ -4,7 +4,7 @@ class EnemyTier1 extends Enemy {
         base_dps: 1,
         maxAcc: 8,
         frictionAlpha: 2,
-        targetRadius: 15,
+        targetRadius: 10,
     }
 
     constructor(scene, x, y, params) {

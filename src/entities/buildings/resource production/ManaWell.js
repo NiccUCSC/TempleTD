@@ -2,7 +2,6 @@ class ManaWell extends Building {
     static params = {
         name: "manawell",
         team: 1,
-        logisticRadius: 10,
         scale: 2,
         maxHealth: 200,
         healthRegenRate: 0.01,

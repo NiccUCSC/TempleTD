@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, 0, -3)  // Position at (100, 100)
         this.hub = new Hub(this, 0, 0)
 
-        this.t1SpawnZone = new EnemySpawnZone(this, -5, -20, {
+        this.t1SpawnZone = new EnemySpawnZone(this, -5, -40, {
             spawnRate: 0.5,
             spawnRadius: 1,
             spawnType: EnemyTier1,

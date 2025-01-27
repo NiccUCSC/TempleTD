@@ -2,7 +2,6 @@ class StonePit extends Building {
     static params = {
         name: "stonepit",
         team: 1,
-        logisticRadius: 10,
         scale: 2,
         maxHealth: 200,
         healthRegenRate: 0.01,

@@ -42,6 +42,17 @@ class TerrainGeneration {
         this.setTile(layer, x, y, this.tiles.bigRock);
     }
 
+    static generateTerrainBarrier(layer) {
+        const BarrierRadii = layer.tilemap.width * 0.4
+        const cx = layer.tilemap.width / 2
+        const cy = layer.tilemap.height / 2
+
+        for (let x = 0; x < layer.tilemap.width; x++)
+            for (let y = 0; y < layer.tilemap.height; y++)
+                if ((x - cx) ** 2 + (y - cy) ** 2 > BarrierRadii ** 2) 
+                    this.setTile(layer, x, y, this.tiles.bigRock)
+    }
+
     static setTile(layer, x, y, tile) {
         layer.fill(tile, x, y, 1, 1);
     }

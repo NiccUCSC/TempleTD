@@ -2,7 +2,6 @@ class TurretTier1 extends Turret {
     static params = {
         name: "turrettier1",
         targetRadius: 6,
-        logisticRadius: 10,
         scale: 1,
         fireRate: 1,
         muzzleVel: 6,

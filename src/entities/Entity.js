@@ -147,11 +147,25 @@ class Entity extends Phaser.Physics.Matter.Sprite {
     }
 
     // event functions
-    pointerover() { this.hovering = true }
+    pointerover() {        
+        console.log(`Hovering ${this.name}`)
 
-    pointerout() { this.hovering = false }
+        this.hovering = true 
+    }
 
-    pointerdown() { this.selected = this.hovering && !this.selected }
+    pointerout() { 
+        
+        console.log(`Unhovering ${this.name}`)
+        this.hovering = false 
+    }
+
+    pointerdown() {
+        // console.log(`Clicked ${this.name}, Hovering ${this.hovering}, Selected ${this.selected}`)
+
+        this.selected = this.hovering && !this.selected
+        if (this.selected) console.log(`Clicked ${this.name}`)
+        else console.log(`Unclicked ${this.name}`)
+    }
 
     move_with_force(force, dt) {        
         let speed = this.vel.length()
@@ -228,13 +242,11 @@ class Entity extends Phaser.Physics.Matter.Sprite {
             entity.update_health(dt)                    // entities die here
         }
 
-        if (Entity.previewSprite) {
+        if (Entity.previewSprite) {                     // used for previewing building placment
             let mouseX = game.input.mousePointer.worldX
             let mouseY = game.input.mousePointer.worldY
             Entity.previewSprite.setPosition(mouseX, mouseY).setOrigin(0.5, 0.5)
         }
-
-        // if (Entity.previewSprite) console.log(Entity.previewSprite.collidingWith)
     }
 
     is_alive(entity) {
@@ -261,6 +273,7 @@ class Entity extends Phaser.Physics.Matter.Sprite {
         // console.log('destroy')
         for (let entity of Entity.get_all_entites(this.scene)) entity.collidingWith.delete(this)
         if (this.healthBar) this.healthBar.destroy()
+        // if (this.target)
         super.destroy()
     }
 }
